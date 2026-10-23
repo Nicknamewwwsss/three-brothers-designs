@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en"><head>
+<meta name="robots" content="noindex, nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Schiowitz Kitchen Concept</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: drafting-sheet page — title block, stamped concept notice, 3D model, then plan, elevations, schedule, notes */
+:root{
+  --paper:#f5f5f1; --sheet:#ffffff; --ink:#1d2226; --ink-2:#4c555c; --line:#cfd2cc;
+  --oak:#a8834f; --oak-soft:#efe4d2; --blue:#2c5b7a; --blue-soft:#e3edf3;
+  --stamp:#b0392b; --stamp-soft:#fbeae6; --appl:#dfe7ec;
+  --f-display:"Archivo Narrow","Arial Narrow",Arial,sans-serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --svg-bg:#ffffff; --svg-ink:#1d2226; --svg-faint:#9aa1a6; --svg-wall:#3a4045; --svg-oak:#efe2cc; --svg-appl:#d9e3ea; --svg-stone:#eceae4;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#15181b; --sheet:#1d2125; --ink:#e7e9ea; --ink-2:#a9b0b5; --line:#343a40;
+  --oak:#d2ad75; --oak-soft:#3a3226; --blue:#8bb8d6; --blue-soft:#1f2e39;
+  --stamp:#ef7a68; --stamp-soft:#3a2420; --appl:#24313a;
+  --svg-bg:#1d2125; --svg-ink:#e7e9ea; --svg-faint:#6d767c; --svg-wall:#c9ced2; --svg-oak:#3d3427; --svg-appl:#263744; --svg-stone:#2b2f33; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#15181b; --sheet:#1d2125; --ink:#e7e9ea; --ink-2:#a9b0b5; --line:#343a40;
+  --oak:#d2ad75; --oak-soft:#3a3226; --blue:#8bb8d6; --blue-soft:#1f2e39;
+  --stamp:#ef7a68; --stamp-soft:#3a2420; --appl:#24313a;
+  --svg-bg:#1d2125; --svg-ink:#e7e9ea; --svg-faint:#6d767c; --svg-wall:#c9ced2; --svg-oak:#3d3427; --svg-appl:#263744; --svg-stone:#2b2f33; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(28px,4.4vw,42px);font-weight:700;line-height:1.05}
+h2{font-size:24px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+.eyebrow{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--ink-2);font-weight:600}
+.mono{font-family:var(--f-mono);font-size:.86em}
+.titleblock{display:grid;grid-template-columns:1fr auto;gap:16px 28px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:16px}
+.titleblock .meta{display:grid;grid-template-columns:auto auto;gap:2px 14px;font-size:13px;color:var(--ink-2)}
+.titleblock .meta b{color:var(--ink);font-weight:600}
+.stamp{border:2px solid var(--stamp);background:var(--stamp-soft);color:var(--ink);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:start}
+.stamp .tag{font-family:var(--f-display);font-weight:700;color:var(--stamp);text-transform:uppercase;letter-spacing:.1em;font-size:14px;border:1.5px solid var(--stamp);padding:4px 8px;white-space:nowrap}
+.stamp p{margin:0;max-width:85ch;font-size:14px}
+section{display:flex;flex-direction:column;gap:12px}
+.sheet{background:var(--sheet);border:1px solid var(--line)}
+.viewer{position:relative;height:min(72vh,720px);min-height:420px;overflow:hidden;background:#e9e7e1}
+.viewer canvas{display:block;width:100%;height:100%;touch-action:none}
+.pins{position:absolute;inset:0;pointer-events:none}
+.pin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;pointer-events:auto;cursor:default}
+.pin .n{width:24px;height:24px;border-radius:50%;background:#1d2226;color:#fff;font:600 12px/24px var(--f-mono);text-align:center;box-shadow:0 0 0 2px #fff}
+.pin .t{background:rgba(255,255,255,.93);color:#1d2226;font:500 12px/1.25 var(--f-body);padding:3px 7px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.pin .t small{display:block;font-family:var(--f-mono);font-size:10.5px;color:#4c555c}
+.pins.nolabels .t{display:none}
+.pin.hl .n{background:#b0392b}
+.vstamp{position:absolute;left:12px;top:12px;font:700 11px/1 var(--f-display);letter-spacing:.12em;text-transform:uppercase;color:#b0392b;border:1.5px solid #b0392b;background:rgba(255,255,255,.85);padding:5px 8px;pointer-events:none}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:500 13px var(--f-body);border:1px solid var(--line);background:var(--sheet);color:var(--ink);padding:7px 12px;cursor:pointer;border-radius:2px}
+.btn:hover{border-color:var(--ink-2)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.toolbar .tl{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.1em;font-size:11.5px;color:var(--ink-2);font-weight:600;margin-right:2px}
+.toolbar .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.hint{font-size:12.5px;color:var(--ink-2)}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0;border-top:1px solid var(--line)}
+.legend li{list-style:none;display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);min-width:0}
+.legend .k{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--sheet);font:600 12px/24px var(--f-mono);text-align:center}
+.legend b{font-weight:600;display:block;font-size:14px;line-height:1.3}
+.legend .mono{color:var(--blue)}
+ul.legend{margin:0;padding:0}
+.drawing{overflow-x:auto;background:var(--svg-bg)}
+.drawing svg{display:block;min-width:640px;width:100%;height:auto}
+.drawing text{font-family:var(--f-body)}
+.elev-grid{display:grid;grid-template-columns:1fr;gap:20px}
+.elev{display:flex;flex-direction:column;gap:6px}
+.elev .cap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.key{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:12.5px;color:var(--ink-2);padding:8px 12px;border-top:1px solid var(--line)}
+.key span b{font-family:var(--f-mono);font-weight:500;color:var(--ink)}
+.sched{display:flex;flex-direction:column}
+.sched .row{display:grid;grid-template-columns:34px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1.4fr);gap:14px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:start}
+.sched .row.h{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--ink-2);padding-block:8px}
+.sched .mono{color:var(--blue);word-break:break-word}
+.sched .row > div{min-width:0}
+@media (max-width:720px){.sched .row{grid-template-columns:30px 1fr}.sched .row > div:nth-child(n+3){grid-column:2}.sched .row.h{display:none}}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.notes{padding:16px 18px}
+.notes ul{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.notes li{max-width:70ch}
+.flag{display:inline-block;font:600 11px var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--stamp);border:1px solid var(--stamp);padding:0 5px;margin-right:6px;vertical-align:1px}
+.src{font-size:12.5px;color:var(--ink-2)}
+.src a{color:var(--blue)}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+</head><body>
+
+
+<div class="wrap">
+  <header class="titleblock">
+    <div>
+      <div class="eyebrow">Three Brothers Kitchens &amp; Baths · Design concept</div>
+      <h1>Schiowitz Kitchen Remodel #1</h1>
+      <div class="hint" style="margin-top:6px">Revised appliance package on white rift oak slab cabinetry, built from the Mark Kleinberg Designs sketches (pp. 1–4).</div>
+    </div>
+    <div class="meta">
+      <span>Sheet</span><b>Concept 3D · Rev C</b>
+      <span>Based on</span><b>Hand sketches 1/30–2/2/2025</b>
+      <span>Cabinetry</span><b>White rift oak, slab</b>
+      <span>Status</span><b style="color:var(--stamp)">Visualization only</b>
+    </div>
+  </header>
+
+  <div class="stamp" role="note">
+    <span class="tag">Not for construction</span>
+    <p><b>This is a concept visualization, not a construction document.</b> The layout is traced from unscaled hand sketches and the proportions are approximate. Nothing here was field-measured. Before you order, fabricate or rough-in anything, verify all dimensions, clearances, cutouts, utility locations and ventilation against the manufacturers' current installation guides and verified, measured drawings. The realistic view is an artist's impression: countertop, backsplash and wall colors are placeholders, and the island refinish colors are options to discuss, not selections.</p>
+  </div>
+
+  <section aria-labelledby="h3d">
+    <div class="cap" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+      <h2 id="h3d">3D model</h2>
+      <span class="hint">Drag to orbit · scroll or pinch to zoom · right-drag to pan</span>
+    </div>
+    <div class="toolbar" role="toolbar" aria-label="Render style">
+      <span class="tl">Style</span>
+      <button class="btn" data-style="real" aria-pressed="true">Realistic</button>
+      <button class="btn" data-style="concept" aria-pressed="false">Concept</button>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="tl">Island refinish</span>
+      <button class="btn" data-island="charcoal" aria-pressed="true">Charcoal paint</button>
+      <button class="btn" data-island="white" aria-pressed="false">Warm white paint</button>
+      <button class="btn" data-island="oak" aria-pressed="false">Light oak-tone</button>
+      <button class="btn" data-island="cherry" aria-pressed="false">Existing cherry</button>
+    </div>
+    <div class="toolbar" role="toolbar" aria-label="Camera views">
+      <span class="tl">View</span>
+      <button class="btn" data-view="eyeEntry" aria-pressed="true">Eye level: entry</button>
+      <button class="btn" data-view="eyeIsland">Eye level: from ovens</button>
+      <button class="btn" data-view="overview">Overview</button>
+      <button class="btn" data-view="appliance">Appliance wall</button>
+      <button class="btn" data-view="range">Range wall</button>
+      <button class="btn" data-view="sink">Peninsula sink</button>
+      <button class="btn" data-view="bar">Bar side</button>
+      <button class="btn" data-view="plan">Top view</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="btn" id="tLabels" aria-pressed="true">Labels</button>
+      <button class="btn" id="tFridge" aria-pressed="false">Fridge: oak panels</button>
+    </div>
+    <div class="sheet viewer" id="viewer">
+      <div class="vstamp">Concept visualization · not for construction</div>
+      <div class="pins" id="pins"></div>
+    </div>
+    <ul class="legend sheet" id="legend"></ul>
+  </section>
+
+  <section aria-labelledby="hplan">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+      <h2 id="hplan">Floor plan sketch</h2>
+      <span class="hint">Approximate, not to scale for construction · dashed = wall cabinets / hood above · tinted = appliances</span>
+    </div>
+    <div class="sheet drawing" id="plan"></div>
+  </section>
+
+  <section aria-labelledby="helev">
+    <h2 id="helev">Elevation sketches</h2>
+    <div class="elev-grid" id="elevs"></div>
+  </section>
+
+  <section aria-labelledby="hsched">
+    <h2 id="hsched">Appliance schedule</h2>
+    <div class="sheet sched" id="sched"></div>
+    <div class="src">Model numbers checked against Sub-Zero/Wolf/Cove product pages on 10/23/2026: <a href="https://subzero-wolf.com/wolf/ranges/dual-fuel/48-inch-dual-fuel-range-6-burners-infrared-griddle" target="_blank" rel="noopener">48" dual-fuel range</a> · <a href="https://www.subzero-wolf.com/products/wolf/ventilation/range-hood/pro-hood-liners-19-inch-deep/54-inch-pro-hood-liner-19-inch-depth" target="_blank" rel="noopener">54" pro hood liner, 19" deep</a> · <a href="https://www.subzero-wolf.com/products/30-inch-m-series-transitional/spec-spo3050tm-s-t" target="_blank" rel="noopener">30" M Series speed oven</a> · <a href="https://www.designerappliances.com/wolf-so3050tmst.html" target="_blank" rel="noopener">30" M Series single oven</a> · <a href="https://subzero-wolf.com/sub-zero/full-size-refrigeration/builtin-refrigerators/48-inch-built-in-french-door-refrigerator-freezer-panel-ready" target="_blank" rel="noopener">48" built-in French door</a> · <a href="https://subzero-wolf.com/cove/dishwashers/24-inch-dishwasher-panel-ready" target="_blank" rel="noopener">Cove 24" panel-ready</a> · <a href="https://subzero-wolf.com/sub-zero/wine-cooler/24-inch-built-in-wine-storage-panel-ready" target="_blank" rel="noopener">24" wine storage</a></div>
+  </section>
+
+  <section aria-labelledby="hnotes">
+    <h2 id="hnotes">What changed, assumptions and items to verify</h2>
+    <div class="cols">
+      <div class="sheet notes">
+        <h3>Rev B changes</h3>
+        <ul>
+          <li><b>Cabinets go to the ceiling.</b> Wall cabinets and the oven and refrigerator towers now run to the ceiling. Each has a slab stacker row on top, so there's no gap or soffit above.</li>
+          <li><b>The hood is flush and built in.</b> It's now a 60" white rift oak slab hood running to the ceiling. Its face is flush with the range-wall cabinets, which are now 19" deep to match. The liner changes to the 19"-deep Wolf <span class="mono">PL521912</span>.</li>
+          <li><b>The existing island is refinished.</b> It keeps its cherry base, marble top and prep sink, all as in the photos. The rope-turned corner posts are removed, leaving plain square corners. The buttons above show four finishes. Charcoal paint is the starting proposal, because it contrasts with the light oak and white marble.</li>
+          <li><b>New realistic view.</b> It uses the terracotta hex floor, white marble island top and frosted pendants from the photos, with a ceiling, recessed lights and reflections. The concept view is still there.</li>
+        </ul>
+        <h3 style="margin-top:14px">Rev A changes from the sketches</h3>
+        <ul>
+          <li>Two 30" refrigerators (pp. 1, 4) are replaced by <b>one 48" built-in refrigerator</b> at the entrance-hall end of the appliance wall.</li>
+          <li>The microwave / oven / warmer tower is now a <b>30" speed oven over a 30" single wall oven</b>, matching Wolf M Series.</li>
+          <li>The 18" dishwasher at the butler's station is replaced by the <b>24" undercounter wine storage</b>. The butler's run is re-balanced: open shelves, wine, sink, trash, drawers.</li>
+          <li>Hood "TBD 60" wide" (p. 2) is now a <b>Wolf 54" pro hood liner</b> inside a 60" white rift oak hood.</li>
+          <li>The one requested dishwasher, a <b>Cove 24"</b>, goes at the peninsula, where p. 3 already shows a 24" dishwasher beside the 39" stone sink.</li>
+          <li>The range wall drawers, blind corner, peninsula order and the existing 62×104 island follow the sketches.</li>
+        </ul>
+      </div>
+      <div class="sheet notes">
+        <h3>Assumptions in this model</h3>
+        <ul>
+          <li>The ceiling is assumed to be about 9 ft. Cabinets run to it with a scribe, and wall cabinets start at about 54". The photos show crown molding at the ceiling, which would come off along the cabinet walls.</li>
+          <li>The terracotta hex floor, marble island top, island prep sink and pendants are shown as existing, based on the photos.</li>
+          <li>The peninsula's stool side is drawn as a raised bar-height ledge, per the "bar height stools" note on p. 3.</li>
+          <li>The refrigerator is shown panel-ready with oak slab panels. The toggle above shows the stainless version.</li>
+          <li>The perimeter countertop and backsplash weren't specified. The realistic view shows white marble to match the island top, as a placeholder. The butler's sink fixture is also TBD.</li>
+          <li>The pantry is outside this visualization (marked "TBD" on p. 4).</li>
+        </ul>
+      </div>
+      <div class="sheet notes">
+        <h3>Verify before ordering</h3>
+        <ul>
+          <li><span class="flag">Confirm</span>Wolf does not make refrigerators. Refrigeration in this family is <b>Sub-Zero</b>, so the 48" unit is shown as Sub-Zero <span class="mono">CL4850UFD/O</span>. Confirm the style: French door, side-by-side or column pair.</li>
+          <li><span class="flag">Confirm</span>Range configuration (6 burners + griddle shown) and fuel type. Liquid propane adds <span class="mono">-LP</span>.</li>
+          <li><span class="flag">Confirm</span>The flush hood uses the 19"-deep liner <span class="mono">PL521912</span>. A 22" liner captures more over a 48" range, but it would stick out past 19" cabinets. Check capture against Wolf's ventilation guide, then choose the blower and duct route (p. 4 shows a duct chase in the pantry).</li>
+          <li><span class="flag">Confirm</span>The range-wall cabinets are 19" deep so they sit flush with the hood. That puts them about 6" further out over the counter than standard 12–13" cabinets.</li>
+          <li><span class="flag">Confirm</span>Ceiling height and level along every cabinet wall, for the ceiling-height stackers and scribe.</li>
+          <li><span class="flag">Confirm</span>Island refinish: the cherry would need stripping or sanding before paint or a lighter stain. Confirm the marble top and prep sink stay in place during the work.</li>
+          <li><span class="flag">Confirm</span>Wine storage hinge side (<span class="mono">/L</span> or <span class="mono">/R</span>) and whether Cove and wine use oak panels or stainless door kits.</li>
+          <li><span class="flag">Confirm</span>Oven tower electrical, the 48" refrigerator opening and the dishwasher next to the apron sink all need field verification.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+/* ============ LAYOUT DATA (inches) — single source for 3D, plan and elevations ============ */
+const H = 108; // assumed ceiling
+const RUNS = {
+  A:{o:[0,0],   U:[0,1], N:[1,0],  title:'Elevation A — Appliance wall / butler’s station', l:'Entrance hall', r:'Dining', span:[0,189]},
+  B:{o:[0,85],  U:[1,0], N:[0,1],  title:'Elevation B — Range wall', l:'Pantry partition', r:'Peninsula', span:[77,262]},
+  C:{o:[258,0], U:[0,1], N:[-1,0], title:'Elevation C — Peninsula, kitchen sink side', l:'Patio side', r:'Staircase side', span:[85,242]},
+  D:{o:[258,0], U:[0,1], N:[1,0],  title:'Elevation D — Peninsula, bar stool side', l:'Staircase side', r:'Patio side', span:[83,242]}
+};
+const D3 = (n)=>[['drawer',24.25,34.5],['drawer',14.25,24],['drawer',4,14]];
+const D4 = ()=>[['drawer',27.25,34.5],['drawer',19.75,27],['drawer',12.25,19.5],['drawer',4,12]];
+// base & tall units
+const UNITS = [
+  {run:'A',u:[0,12],  h:34.5,name:'Open end shelves',code:'OSB12',fr:[['open',4,34.5]]},
+  {run:'A',u:[12,36], h:34.5,name:'Sub-Zero 24" undercounter wine storage',code:'DEU2450W/R',tag:4,appl:1,fr:[['wine',0.5,34.25]]},
+  {run:'A',u:[36,66], h:34.5,name:'Sink base – butler’s sink',code:'SB30',tag:5,sink:{w:20,dep:15,mat:'steel'},fr:[['false',29.75,34.5],['door2',4,29.5]]},
+  {run:'A',u:[66,84], h:34.5,name:'Pull-out trash',code:'BWB18',fr:[['drawer',4,34.5]]},
+  {run:'A',u:[84,108],h:34.5,name:'3-drawer base',code:'B24-3D',fr:D3()},
+  {run:'A',u:[108,141],h:H,name:'Oven tower, to ceiling',code:'OV33108',fr:[['stack2',94.25,108],['door2',70.5,94],['speed',51.5,70.25,{tag:2,code:'SPO3050TM/S/T',name:'Wolf 30" speed oven'}],['oven',22.25,51.25,{tag:3,code:'SO3050TM/S/T',name:'Wolf 30" single wall oven'}],['drawer',4,22]]},
+  {run:'A',u:[141,189],h:H,name:'Sub-Zero 48" refrigerator',code:'CL4850UFD/O',tag:1,appl:1,fr:[['door2',84.5,108,{code:'W4824-24'}],['fridge',34,84],['fdrawer',19.25,33.75],['fdrawer',4,19]]},
+
+  {run:'B',u:[81,111], h:34.5,name:'Pots & pans drawers',code:'B30-3D',fr:D3()},
+  {run:'B',u:[111,141],h:34.5,name:'Spice / utensil drawers',code:'B30-4D',fr:D4()},
+  {run:'B',u:[141,189],h:36,name:'Wolf 48" dual-fuel range',code:'DF48650G/S/P',tag:6,appl:1,range:1,fr:[]},
+  {run:'B',u:[189,213],h:34.5,name:'Utensil & knife drawers',code:'B24-4D',fr:D4()},
+  {run:'B',u:[213,258],h:34.5,name:'Blind-corner base',code:'BBC45',fr:[['drawer',29.75,34.5,{u:[213,231.75]}],['door',4,29.5,{u:[213,231.75]}]]},
+
+  {run:'C',u:[109,124],h:34.5,name:'15" base (use TBD)',code:'B15',fr:[['drawer',29.75,34.5],['door',4,29.5]]},
+  {run:'C',u:[124,142],h:34.5,name:'Pull-out trash',code:'BWB18',fr:[['drawer',4,34.5]]},
+  {run:'C',u:[142,181],h:34.5,name:'Apron-sink base, 39" stone sink',code:'SBA39',tag:9,sink:{w:36,dep:18,mat:'stone',apron:1},fr:[['apron',25,34.5],['door2',4,24.75]]},
+  {run:'C',u:[181,205],h:34.5,name:'Cove 24" dishwasher',code:'DW2451',tag:8,appl:1,fr:[['dw',4,34.5]]},
+  {run:'C',u:[205,238],h:34.5,name:'3-drawer base',code:'B33-3D',fr:D3()}
+];
+const UPPERS = [ // all run to the ceiling: main box 54–94 + slab stacker 94¼–108
+  {run:'A',u:[0,12],  y:[54,H],d:13,name:'Open wall shelves, to ceiling',code:'OSW1254',fr:[['open',54,H]]},
+  {run:'A',u:[12,40], y:[54,H],d:13,name:'Wall cabinet + stacker',code:'W2840',stk:'W2814S',fr:[['stack2',94.25,H],['door2',54,94]]},
+  {run:'A',u:[40,84], y:[54,H],d:13,name:'Lift-up wall cabinet + stacker (wood or glass, p.1)',code:'W4440-LU',stk:'W4414S',fr:[['stack2',94.25,H],['lift',74.25,94],['lift',54,74]]},
+  {run:'A',u:[84,108],y:[54,H],d:13,name:'Wall cabinet + stacker',code:'W2440',stk:'W2414S',fr:[['stack2',94.25,H],['door2',54,94]]},
+  {run:'B',u:[81,93], y:[54,H],d:19,name:'Open shelves, 19" deep (vases / plants, p.2)',code:'OSW1254-19',fr:[['open',54,H]]},
+  {run:'B',u:[93,135],y:[54,H],d:19,name:'Wall cabinet + stacker, 19" deep',code:'W4240-19',stk:'W4214S-19',fr:[['stack2',94.25,H],['door2',54,94]]},
+  {run:'B',u:[195,216],y:[54,H],d:19,name:'Wall cabinet + stacker, 19" deep',code:'W2140-19',stk:'W2114S-19',fr:[['stack1',94.25,H],['door',54,94]]},
+  {run:'B',u:[216,258],y:[54,H],d:19,name:'Wall cabinet + stacker, 19" deep',code:'W4240-19',stk:'W4214S-19',fr:[['stack2',94.25,H],['door2',54,94]]}
+];
+const HOOD = {run:'B',u:[135,195],y:[66,H],d:19,liner:[138,192],code:'PL521912',tag:7};
+const ISLAND = {x:[75,179],z:[160,222]};
+const BAR = {x:[250,272],z:[85,240.5],y:41.5};
+const STOOLS = [120,152,184,216].map(z=>({x:288,z}));
+const WALLS = [ // x0,x1,z0,z1,y0,y1
+  [-5,0,-5,252,0,H],                    // west (appliance) wall
+  [0,28,-5,0,0,H],[72,250,-5,0,0,H],[28,72,-5,0,84,H], // north wall + cased opening to dining
+  [77,81,0,45,0,H],[77,81,77,85,0,H],[77,81,45,77,80,H], // pantry partition + pantry door
+  [77,278,81,85,0,H],[316,330,81,85,0,H],[278,316,81,85,82,H], // range wall + French doors
+  [246,250,-5,81,0,H]                    // pantry exterior wall (window)
+];
+const PINS = [
+  {n:1,name:'Sub-Zero 48" refrigerator',code:'CL4850UFD/O',p:[27,62,165]},
+  {n:2,name:'Wolf 30" speed oven',code:'SPO3050TM/S/T',p:[27,61,124.5]},
+  {n:3,name:'Wolf 30" single wall oven',code:'SO3050TM/S/T',p:[27,37,124.5]},
+  {n:4,name:'Sub-Zero 24" wine storage',code:'DEU2450W/R',p:[27,18,24]},
+  {n:5,name:'Butler’s sink',code:'SB30 · fixture TBD',p:[12,40,51]},
+  {n:6,name:'Wolf 48" dual-fuel range',code:'DF48650G/S/P',p:[165,24,115]},
+  {n:7,name:'Flush 60" oak hood, Wolf 54" liner',code:'PL521912',p:[165,84,106]},
+  {n:8,name:'Cove 24" dishwasher',code:'DW2451 (panel-ready)',p:[231,20,193]},
+  {n:9,name:'39" stone apron-front sink',code:'SBA39 base',p:[231,38,161.5]},
+  {n:10,name:'Existing island, refinished',code:'Charcoal paint',p:[127,40,191]},
+  {n:11,name:'Bar-height ledge + 4 stools',code:'peninsula, p.3',p:[275,46,168]},
+  {n:12,name:'White rift oak slab cabinetry',code:'all cabinet fronts',p:[114,80,98]}
+];
+const SCHEDULE = [
+  [1,'Refrigerator','Sub-Zero 48" Classic French door refrigerator/freezer, panel-ready','CL4850UFD/O','Appliance wall, entrance-hall end. Replaces two 30" units. Requested as "Wolf"; Sub-Zero is the refrigeration brand. Stainless alt: CL4850UFD/S.'],
+  [2,'Speed oven','Wolf 30" M Series Transitional speed oven','SPO3050TM/S/T','Upper position in oven tower, about eye level.'],
+  [3,'Wall oven','Wolf 30" M Series Transitional single oven','SO3050TM/S/T','Lower position in oven tower, below speed oven, drawer under.'],
+  [4,'Wine storage','Sub-Zero 24" Designer undercounter wine storage, panel-ready','DEU2450W/R (or /L)','Butler’s station, dining end, in place of 18" dishwasher.'],
+  [6,'Range','Wolf 48" dual-fuel range, 6 burners + infrared griddle','DF48650G/S/P','Centered on range wall per p. 2. -LP for propane.'],
+  [7,'Ventilation','Wolf 54" pro hood liner, 19" depth','PL521912','In a flush 60" white rift oak slab hood that runs to the ceiling, flush with the 19"-deep range-wall cabinets. Blower sold separately.'],
+  [10,'Island (existing)','Refinish the existing cherry island base. Marble top and prep sink stay. Remove the rope-turned corner posts and finish the corners square.','Finish TBD','Charcoal paint shown. Warm white paint, light oak-tone stain and as-is cherry are on the buttons above the 3D model.'],
+  [8,'Dishwasher','Cove 24" dishwasher, panel-ready (oak slab panel)','DW2451','Peninsula, right of 39" stone sink per p. 3.'],
+  [9,'Sink','39" stone apron-front sink (by others)','SBA39 base','Peninsula, kitchen side. Fixture and faucet TBD.']
+];
+
+/* ============ helpers ============ */
+const $ = s=>document.querySelector(s);
+const W = (run,u,d)=>{const r=RUNS[run];return [r.o[0]+u*r.U[0]+d*r.N[0], r.o[1]+u*r.U[1]+d*r.N[1]];};
+const css = n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* ============ 3D ============ */
+const viewer = $('#viewer');
+let renderer, scene, camera, controls, fridgeMeshes=[], mats={};
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function mkCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h||w;return c;}
+function toTex(c,rep){const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.anisotropy=8;if(rep)t.repeat.set(rep[0],rep[1]);return t;}
+function canvasTex(draw,size=256){const c=mkCanvas(size);draw(c.getContext('2d'),size);return toTex(c);}
+function rng(seed){return ()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};}
+function oakTex(){return canvasTex((g,s)=>{g.fillStyle='#d9c3a0';g.fillRect(0,0,s,s);const rnd=rng(7);
+  for(let i=0;i<150;i++){const x=rnd()*s,w=0.4+rnd()*1.6;g.fillStyle=`rgba(${120+rnd()*40|0},${88+rnd()*30|0},${55+rnd()*20|0},${0.05+rnd()*0.16})`;g.fillRect(x,0,w,s);}
+  for(let i=0;i<12;i++){const x=rnd()*s;g.fillStyle='rgba(255,248,235,0.18)';g.fillRect(x,0,2+rnd()*5,s);} });}
+// rift-sawn grain: tight, straight, parallel lines with gentle drift
+function grainTex(base,dark,light,seed,size=1024){return canvasTex((g,s)=>{g.fillStyle=base;g.fillRect(0,0,s,s);const rnd=rng(seed);
+  for(let i=0;i<26;i++){const x=rnd()*s,w=8+rnd()*40;g.fillStyle=`rgba(${light},${0.05+rnd()*0.08})`;g.fillRect(x,0,w,s);}
+  for(let i=0;i<520;i++){let x=rnd()*s;const lw=0.4+rnd()*rnd()*3.2,a=0.05+rnd()*0.22;g.strokeStyle=`rgba(${dark},${a})`;g.lineWidth=lw;g.beginPath();g.moveTo(x,0);
+    for(let y=0;y<=s;y+=s/12){x+=(rnd()-.5)*1.4;g.lineTo(x,y);}g.stroke();}
+  for(let i=0;i<70;i++){const x=rnd()*s,y=rnd()*s;g.fillStyle=`rgba(${light},${0.06+rnd()*0.1})`;g.fillRect(x,y,1+rnd()*2,6+rnd()*18);} },size);}
+function marbleTex(){return canvasTex((g,s)=>{g.fillStyle='#f3f1ec';g.fillRect(0,0,s,s);const rnd=rng(11);
+  for(let i=0;i<90;i++){const x=rnd()*s,y=rnd()*s,r=40+rnd()*180;const gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,`rgba(${200+rnd()*20|0},${202+rnd()*20|0},${208+rnd()*20|0},.10)`);gr.addColorStop(1,'rgba(230,230,230,0)');g.fillStyle=gr;g.fillRect(0,0,s,s);}
+  const vein=(w,a,blur,n)=>{g.filter=`blur(${blur}px)`;for(let v=0;v<n;v++){let x=rnd()*s,y=rnd()*s,ang=-0.6+rnd()*0.5;g.strokeStyle=`rgba(${105+rnd()*30|0},${110+rnd()*30|0},${122+rnd()*30|0},${a*(0.5+rnd())})`;g.lineWidth=w*(0.5+rnd());g.beginPath();g.moveTo(x,y);
+    for(let k=0;k<70;k++){ang+=(rnd()-.5)*0.45;x+=Math.cos(ang)*12;y+=Math.sin(ang)*12;g.lineTo(x,y);}g.stroke();}g.filter='none';};
+  vein(5,0.10,6,8); vein(1.6,0.35,1.2,14); vein(0.6,0.35,0.4,26); },1024);}
+function hexTex(){const cols=8,rows=8,w=1024,hw=w/cols,r=hw/Math.sqrt(3),h=Math.round(1.5*r*rows);const c=mkCanvas(w,h),g=c.getContext('2d');
+  g.fillStyle='#8c7a66';g.fillRect(0,0,w,h);
+  const pal=['#b5533a','#c4643f','#a94a35','#cf7a4c','#b86a45','#9e4332','#d08a5a','#bd5c3c','#c97b55','#a85a40'];
+  const hash=(a,b)=>{const x=Math.sin(a*127.1+b*311.7)*43758.5453;return x-Math.floor(x);};
+  for(let row=-1;row<=rows;row++)for(let col=-1;col<=cols;col++){const cx=col*hw+((row&1)?hw/2:0),cy=row*1.5*r;const R=((row%rows)+rows)%rows,C=((col%cols)+cols)%cols;
+    g.save();g.beginPath();for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30);const px=cx+(r-5)*Math.cos(a),py=cy+(r-5)*Math.sin(a);i?g.lineTo(px,py):g.moveTo(px,py);}g.closePath();
+    g.fillStyle=pal[Math.floor(hash(C,R)*pal.length)];g.fill();g.clip();
+    for(let j=0;j<18;j++){const k=hash(C*7+j,R*3+j);g.fillStyle=k>.55?`rgba(240,200,150,${0.05+k*0.08})`:`rgba(70,25,15,${0.04+k*0.1})`;g.beginPath();g.arc(cx+(hash(j,C+R)-.5)*r*1.5,cy+(hash(R+j,j)-.5)*r*1.5,r*(0.15+hash(j,j+C)*0.45),0,7);g.fill();}
+    const sh=g.createLinearGradient(cx-r,cy-r,cx+r,cy+r);sh.addColorStop(0,'rgba(255,230,200,.10)');sh.addColorStop(1,'rgba(40,15,5,.12)');g.fillStyle=sh;g.fillRect(cx-r,cy-r,2*r,2*r);g.restore();}
+  return toTex(c,[1,w/h]);}
+function floorTex(){return canvasTex((g,s)=>{g.fillStyle='#b9a283';g.fillRect(0,0,s,s);const rnd=rng(3);
+  for(let r=0;r<4;r++){const y=r*s/4;g.fillStyle='rgba(60,40,20,.35)';g.fillRect(0,y,s,1.2);const off=rnd()*s;g.fillRect(off,y,1.2,s/4);
+  for(let i=0;i<40;i++){g.fillStyle=`rgba(90,60,30,${rnd()*0.12})`;g.fillRect(0,y+rnd()*s/4,s,0.8);}}},256);}
+
+function scaleUV(geo,sx,sy,sz,T){const uv=geo.attributes.uv;const dims=[[sz,sy],[sz,sy],[sx,sz],[sx,sz],[sx,sy],[sx,sy]];
+  for(let f=0;f<6;f++)for(let i=0;i<4;i++){const k=f*4+i;uv.setXY(k,uv.getX(k)*dims[f][0]/T,uv.getY(k)*dims[f][1]/T);}uv.needsUpdate=true;}
+let target=null; // optional group to add meshes into
+function add(m){(target||scene).add(m);return m;}
+function box(x0,x1,y0,y1,z0,z1,mat,opt={}){
+  const sx=Math.max(x1-x0,0.01),sy=Math.max(y1-y0,0.01),sz=Math.max(z1-z0,0.01);
+  const g=new THREE.BoxGeometry(sx,sy,sz); scaleUV(g,sx,sy,sz,opt.T||28);
+  const m=new THREE.Mesh(g,mat);m.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);
+  m.castShadow=opt.cast!==false;m.receiveShadow=true;return add(m);}
+function rbox(run,u0,u1,d0,d1,y0,y1,mat,opt){const a=W(run,u0,d0),b=W(run,u1,d1);
+  return box(Math.min(a[0],b[0]),Math.max(a[0],b[0]),y0,y1,Math.min(a[1],b[1]),Math.max(a[1],b[1]),mat,opt);}
+function cyl(x,y,z,r,h,mat,axis,seg=20){const g=new THREE.CylinderGeometry(r,r,h,seg);const m=new THREE.Mesh(g,mat);m.position.set(x,y,z);
+  if(axis==='x')m.rotation.z=Math.PI/2; if(axis==='z')m.rotation.x=Math.PI/2; m.castShadow=true;m.receiveShadow=true;return add(m);}
+
+function pullH(run,uc,y,d,len){return rbox(run,uc-len/2,uc+len/2,d,d+0.9,y-0.3,y+0.3,mats.pull);}
+function pullV(run,u,y0,y1,d){return rbox(run,u-0.3,u+0.3,d,d+0.9,y0,y1,mats.pull);}
+function slab(run,u0,u1,y0,y1,d,mat){const g=0.125;return rbox(run,u0+g,u1-g,d,d+0.75,y0+g,y1-g,mat||mats.oak);}
+
+function buildFront(run,uu,f,depth){
+  const [k,y0,y1,o={}]=f; const u0=(o.u||uu)[0],u1=(o.u||uu)[1],uc=(u0+u1)/2,d=depth;
+  switch(k){
+    case 'door': slab(run,u0,u1,y0,y1,d); pullV(run,u1-2,y1>60?y0+2:y1-9,y1>60?y0+10:y1-2,d+0.75); break;
+    case 'door2': slab(run,u0,uc,y0,y1,d); slab(run,uc,u1,y0,y1,d);
+      if(y0>50){pullV(run,uc-1.5,y0+2,y0+9,d+0.75);pullV(run,uc+1.5,y0+2,y0+9,d+0.75);} else {pullV(run,uc-1.5,y1-9,y1-2,d+0.75);pullV(run,uc+1.5,y1-9,y1-2,d+0.75);} break;
+    case 'stack2': slab(run,u0,uc,y0,y1,d); slab(run,uc,u1,y0,y1,d); break; // push-latch stacker
+    case 'stack1': slab(run,u0,u1,y0,y1,d); break;
+    case 'drawer': case 'fdrawer': slab(run,u0,u1,y0,y1,d); pullH(run,uc,y1-1.6,d+0.75,Math.min(18,(u1-u0)*0.55)); break;
+    case 'false': slab(run,u0,u1,y0,y1,d); break;
+    case 'lift': slab(run,u0,u1,y0,y1,d); if(y0<60) pullH(run,uc,y0+1.6,d+0.75,22); break;
+    case 'open': { const n=y1-y0>40?4:(y1-y0>30?3:2); for(let i=1;i<=n;i++){const y=y0+(y1-y0)*i/(n+1); rbox(run,u0+0.75,u1-0.75,0.5,d,y-0.5,y+0.5,mats.oak);} break;}
+    case 'wine': {
+      const t=2; rbox(run,u0+0.1,u1-0.1,d,d+0.9,y0,y0+t+1,mats.oak);rbox(run,u0+0.1,u1-0.1,d,d+0.9,y1-t,y1,mats.oak);
+      rbox(run,u0+0.1,u0+t,d,d+0.9,y0,y1,mats.oak);rbox(run,u1-t,u1-0.1,d,d+0.9,y0,y1,mats.oak);
+      rbox(run,u0+t,u1-t,d+0.3,d+0.5,y0+t+1,y1-t,mats.glass,{cast:false});
+      rbox(run,u0+t,u1-t,d-0.8,d-0.6,y0+t+1,y1-t,mats.wineBack);
+      for(let r=0;r<6;r++)for(let c=0;c<4;c++){const u=u0+t+2.5+c*((u1-u0-2*t-5)/3),y=y0+t+4+r*4.5;const p=W(run,u,d-1.2);cyl(p[0],y,p[1],1.4,1.2,r%2?mats.bottleA:mats.bottleB,RUNS[run].N[0]?'x':'z',12);}
+      pullV(run,u1-3.2,y1-14,y1-3,d+0.9); break;}
+    case 'oven': case 'speed': {
+      rbox(run,u0+0.3,u1-0.3,d,d+1,y0,y1,mats.steel);
+      const top=k==='speed'?y1-4:y1-5.5; rbox(run,u0+2.5,u1-2.5,d+1,d+1.15,y0+2.5,top-3,mats.blackGlass);
+      rbox(run,u0+1,u1-1,d+1,d+1.15,top,y1-0.8,mats.blackGlass);
+      const p0=W(run,u0+4,d+2.2),p1=W(run,u1-4,d+2.2); const g=new THREE.CylinderGeometry(0.45,0.45,u1-u0-8,12);const m=new THREE.Mesh(g,mats.steel);
+      m.position.set((p0[0]+p1[0])/2,top-1.6,(p0[1]+p1[1])/2); if(RUNS[run].U[0]) m.rotation.z=Math.PI/2; else m.rotation.x=Math.PI/2; add(m);
+      break;}
+    case 'fridge': { slab(run,u0,uc,y0,y1,d); slab(run,uc,u1,y0,y1,d); pullV(run,uc-1.8,y0+6,y1-8,d+0.75);pullV(run,uc+1.8,y0+6,y1-8,d+0.75); break;}
+    case 'dw': slab(run,u0,u1,y0,y1,d); pullH(run,uc,y1-1.8,d+0.75,14); break;
+    case 'apron': rbox(run,u0+0.2,u1-0.2,d,d+1.25,y0,y1+1.5,mats.sinkStone); break;
+  }
+}
+function buildUnit(un){
+  const run=un.run,[u0,u1]=un.u;
+  if(un.range){ buildRange(un); return; }
+  const isOpen = un.fr.length===1 && un.fr[0][0]==='open';
+  rbox(run,u0,u1,0,20.5,0,4,mats.toe);
+  if(isOpen){ rbox(run,u0,u0+0.75,0,24,4,un.h,mats.oak);rbox(run,u1-0.75,u1,0,24,4,un.h,mats.oak);
+    rbox(run,u0,u1,0,24,4,4.75,mats.oak);rbox(run,u0,u1,0,0.6,4,un.h,mats.oakShade);
+  } else rbox(run,u0,u1,0,23.25,4,un.h,mats.carcass);
+  un.fr.forEach(f=>buildFront(run,un.u,f,23.25));
+  if(un.code==='CL4850UFD/O') rbox(run,u1,u1+0.75,0,24.5,0,un.h,mats.oak);
+  if(un.code==='OV33108') rbox(run,u0-0.75,u0,0,24.5,36,un.h,mats.oak);
+}
+function buildRange(un){
+  const run=un.run,[u0,u1]=un.u;
+  rbox(run,u0+0.1,u1-0.1,0,28,4,36,mats.steel); rbox(run,u0+0.5,u1-0.5,0,26,0,4,mats.toe);
+  const s=u0+0.6, m=u0+30.3, e=u1-0.6;
+  rbox(run,s,m-0.2,28,28.8,6,28,mats.steel); rbox(run,m+0.2,e,28,28.8,6,28,mats.steel);
+  rbox(run,s+3,m-3,28.8,28.95,10,24,mats.blackGlass);rbox(run,m+3,e-3,28.8,28.95,10,24,mats.blackGlass);
+  pullH(run,(s+m)/2,25.5,28.8,24); pullH(run,(m+e)/2,25.5,28.8,13);
+  rbox(run,u0+0.3,u1-0.3,28,28.6,29,34.5,mats.steel);
+  for(let i=0;i<10;i++){const u=u0+4+i*(u1-u0-8)/9;const p=W(run,u,29.3);cyl(p[0],31.8,p[1],1.05,1.4,mats.knob,RUNS[run].N[0]?'x':'z');}
+  rbox(run,u0+0.4,u1-0.4,1,27,36,36.6,mats.steelDark);
+  for(let c=0;c<3;c++) rbox(run,u0+1.5+c*10.5,u0+11.3+c*10.5,2,26,36.6,37.6,mats.grate);
+  rbox(run,u0+33,u1-1.5,3,25,36.6,37.2,mats.griddle);
+  rbox(run,u0+0.1,u1-0.1,0,3,36,41,mats.steel);
+}
+function buildUpper(up){
+  const run=up.run,[u0,u1]=up.u,[y0,y1]=up.y,D=up.d; const isOpen=up.fr[0][0]==='open';
+  if(isOpen){rbox(run,u0,u0+0.75,0,D,y0,y1,mats.oak);rbox(run,u1-0.75,u1,0,D,y0,y1,mats.oak);rbox(run,u0,u1,0,D,y0,y0+0.75,mats.oak);rbox(run,u0,u1,0,0.6,y0,y1,mats.oakShade);
+    buildFront(run,up.u,['open',y0,y1],D); return;}
+  rbox(run,u0,u1,0,D-0.75,y0,y1,mats.carcass); up.fr.forEach(f=>buildFront(run,up.u,f,D-0.75));
+  rbox(run,u0+0.5,u1-0.5,1,D-2,y0-0.4,y0,mats.lightBar,{cast:false});
+}
+function buildCounters(){
+  const c=mats.counter,o={T:70};
+  rbox('A',0,108,0,25.5,34.5,36,c,o);
+  rbox('B',81,141,0,25.5,34.5,36,c,o);
+  box(189,258,34.5,36,85,110.5,c,o);
+  box(231.5,258,34.5,36,110.5,239.5,c,o);
+  rbox('A',0,108,0,0.6,36,54,mats.splash,{cast:false,T:70});
+  rbox('B',81,258,0,0.6,36,54,mats.splash,{cast:false,T:70});
+  rbox('B',135,195,0,0.6,54,66,mats.splash,{cast:false,T:70});
+  box(254,258.75,36,BAR.y,85,239.5,mats.oak);
+  box(BAR.x[0],BAR.x[1],BAR.y,BAR.y+1.5,BAR.z[0],BAR.z[1],c,o);
+  const segs=4,z0=85,z1=239.5;for(let i=0;i<segs;i++){const a=z0+(z1-z0)*i/segs,b=z0+(z1-z0)*(i+1)/segs;box(258.75,259.5,4.1,BAR.y-0.1,a+0.1,b-0.1,mats.oak);}
+  box(258,258.75,0,4,85,239.5,mats.toe);
+  box(231.5,259.5,0,BAR.y,239.5,240.5,mats.oak);
+  const sinkTop=(run,uc,w,dep,mat)=>{ rbox(run,uc-w/2,uc+w/2,25.5-dep-3,25.5-3,35.9,36.05,mat,{cast:false}); };
+  sinkTop('A',51,20,15,mats.sinkSteel); let p=W('A',51,3); faucet(p[0],p[1],1,0);
+  sinkTop('C',161.5,34,17,mats.basinStone); p=W('C',161.5,3); faucet(p[0],p[1],-1,0);
+}
+// faucet at (x,z) reaching toward (dx,dz)
+function faucet(x,z,dx,dz){cyl(x,43,z,0.6,14,mats.steel);
+  const g=new THREE.TorusGeometry(2.3,0.55,10,20,Math.PI);const m=new THREE.Mesh(g,mats.steel);m.position.set(x+dx*2.3,50,z+dz*2.3);m.rotation.y=dx!==0?0:Math.PI/2;m.castShadow=true;add(m);
+  cyl(x+dx*4.6,48,z+dz*4.6,0.55,4,mats.steel);}
+// flush, ceiling-height hood: same 19" depth and slab language as the range-wall cabinets
+function buildHood(){const h=HOOD,D=h.d;
+  rbox('B',h.u[0],h.u[1],0,D-0.75,h.y[0],H,mats.carcass);
+  slab('B',h.u[0],h.u[1],h.y[0],94,D-0.75);          // hood face panel
+  slab('B',h.u[0],(h.u[0]+h.u[1])/2,94.25,H,D-0.75); slab('B',(h.u[0]+h.u[1])/2,h.u[1],94.25,H,D-0.75); // stacker line continues across
+  rbox('B',h.u[0]+0.75,h.u[1]-0.75,0.75,D-0.75,h.y[0]-0.05,h.y[0]+0.3,mats.oak,{cast:false}); // oak return under face
+  rbox('B',h.liner[0],h.liner[1],0.75,D-1.5,h.y[0]-0.35,h.y[0]-0.05,mats.steel,{cast:false});
+  rbox('B',h.liner[0]+3,h.liner[1]-3,3,D-4,h.y[0]-0.45,h.y[0]-0.35,mats.filter,{cast:false});
+  rbox('B',h.liner[0]+4,h.liner[0]+10,D-3.2,D-2.4,h.y[0]-0.5,h.y[0]-0.45,mats.lightBar,{cast:false});
+  rbox('B',h.liner[1]-10,h.liner[1]-4,D-3.2,D-2.4,h.y[0]-0.5,h.y[0]-0.45,mats.lightBar,{cast:false});
+}
+// existing island (from photos): raised-panel base, open end shelves, marble top with prep sink; corner posts removed
+function buildIsland(){const {x,z}=ISLAND,M=mats.island;
+  const bx0=x[0]+1.5,bx1=x[1]-1.5,bz0=z[0]+1.5,bz1=z[1]-1.5;
+  box(bx0+3,bx1-3,0,3.5,bz0+3,bz1-3,mats.toe);
+  box(bx0+11.5,bx1-11.5,3.5,34.25,bz0+1,bz1-1,M);                  // core
+  [[bx0,bx0+11.5],[bx1-11.5,bx1]].forEach(([a,b])=>{                // open shelving ends
+    const back=a===bx0?b:a; box(back-0.4,back+0.4,3.5,34.25,bz0+1,bz1-1,M);
+    [3.5,13.5,23.5].forEach(y=>box(a+0.5,b,y,y+0.9,bz0+1,bz1-1,M)); box(a+0.5,b,32.5,34.25,bz0+1,bz1-1,M);
+    box(a+0.5,b,3.5,34.25,(bz0+bz1)/2-0.45,(bz0+bz1)/2+0.45,M);});
+  [bz0,bz1].forEach(fz=>{const s=fz===bz0?-1:1, f0=fz+(s<0?0:-0.01);           // long faces
+    const pz=(a,b)=>s<0?[fz,fz+b]:[fz-b,fz];
+    box(bx0,bx1,3.5,34.25,...pz(0,1.2),M);
+    const n=4,w=(bx1-bx0-1)/n;
+    for(let i=0;i<n;i++){const a=bx0+0.5+i*w+0.15,b=a+w-0.3;
+      const raise=(y0,y1)=>{const zz=s<0?[fz-0.75,fz]:[fz,fz+0.75];box(a,b,y0,y1,zz[0],zz[1],M);const zi=s<0?[fz-1.25,fz-0.75]:[fz+0.75,fz+1.25];box(a+2.2,b-2.2,y0+2.2,y1-2.2,zi[0],zi[1],M);};
+      raise(27.75,33.75); raise(4,27.25);
+      const hz=s<0?fz-1.9:fz+1.9; box((a+b)/2-2.5,(a+b)/2+2.5,31.2,31.8,hz-0.35,hz+0.35,mats.brass);
+      box(b-3,b-2.4,14,16.5,hz-0.35,hz+0.35,mats.brass);}
+  });
+  // corner posts removed (Rev C): plain square corners
+  box(x[0],x[1],34.9,36,z[0],z[1],mats.islandTop,{T:80});                                   // marble top, ogee edge suggested by a stepped lip
+  box(x[0]+0.4,x[1]-0.4,34.25,34.9,z[0]+0.4,z[1]-0.4,mats.islandTop,{T:80});
+  box(108,132,35.95,36.06,169,185,mats.sinkSteel,{cast:false}); faucet(120,166.5,0,1);
+}
+function buildStools(){STOOLS.forEach(s=>{cyl(s.x,30,s.z,8,1.6,mats.oak);cyl(s.x,15,s.z,0.9,29,mats.pull);cyl(s.x,0.5,s.z,8,1,mats.pull);const g=new THREE.TorusGeometry(7,0.45,8,28);const m=new THREE.Mesh(g,mats.pull);m.rotation.x=Math.PI/2;m.position.set(s.x,10,s.z);add(m);});}
+function buildWalls(){WALLS.forEach(w=>box(w[0],w[1],w[4],w[5],w[2],w[3],mats.wall,{T:60}));
+  [[278,297],[297,316]].forEach(([a,b])=>{box(a,b,0,82,82.6,83.4,mats.glass,{cast:false});box(a,a+2,0,82,82.3,83.7,mats.frame);box(b-2,b,0,82,82.3,83.7,mats.frame);box(a,b,80,82,82.3,83.7,mats.frame);box(a,b,0,8,82.3,83.7,mats.frame);});
+  box(245.8,250.2,36,80,20,60,mats.glass,{cast:false});
+  box(-5,330,-1,0,-5,262,mats.floor,{cast:false,T:56});
+}
+// realistic-only: ceiling with recessed cans, existing frosted pendants, extra lights
+let realGroup, ceiling, realMode=true, islandFinish='charcoal', TEX={}, envTex=null, LIGHTS={};
+function buildRealExtras(){
+  realGroup=new THREE.Group(); scene.add(realGroup); target=realGroup;
+  ceiling=new THREE.Group(); realGroup.add(ceiling); target=ceiling;
+  box(-5,330,H,H+1,-5,262,mats.ceiling,{cast:false});
+  const cans=[[45,40],[45,120],[45,200],[120,128],[200,128],[120,240],[200,240],[290,140],[290,220],[165,40]];
+  cans.forEach(([cx,cz])=>{const d=new THREE.Mesh(new THREE.CircleGeometry(2.6,24),mats.can);d.rotation.x=Math.PI/2;d.position.set(cx,H-0.05,cz);add(d);
+    const ring=new THREE.Mesh(new THREE.RingGeometry(2.6,3.3,24),mats.trim);ring.rotation.x=Math.PI/2;ring.position.set(cx,H-0.06,cz);add(ring);});
+  target=realGroup;
+  [99,127,155].forEach(px=>{const pz=191;   // three frosted cylinder pendants on leather straps (existing, per photos)
+    const shade=new THREE.Mesh(new THREE.CylinderGeometry(3.6,3.6,13,28,1,true),mats.frost);shade.position.set(px,74,pz);add(shade);
+    const cap=new THREE.Mesh(new THREE.SphereGeometry(3.6,24,12,0,Math.PI*2,Math.PI/2,Math.PI/2),mats.frost);cap.position.set(px,67.5,pz);add(cap);
+    box(px-3.7,px+3.7,80.5,81.5,pz-3.7,pz+3.7,mats.metalDark,{cast:false});
+    box(px-0.6,px+0.6,81.5,H,pz-1.2,pz-0.6,mats.leather,{cast:false});box(px-0.6,px+0.6,81.5,H,pz+0.6,pz+1.2,mats.leather,{cast:false});
+    cyl(px,H-0.6,pz,2.4,1.2,mats.metalDark);});
+  target=null;
+  const pl=(x,y,z,i,c=0xfff1dc,dist=260)=>{const l=new THREE.PointLight(c,i,dist,1.6);l.position.set(x,y,z);realGroup.add(l);return l;};
+  [[45,120],[120,128],[200,128],[120,240],[290,180],[165,40]].forEach(([cx,cz])=>pl(cx,H-6,cz,0.28));
+  pl(127,62,191,0.55,0xffe2b8,180);
+  pl(165,60,100,0.35,0xfff1dc,120);
+}
+function makeEnv(){const pm=new THREE.PMREMGenerator(renderer);const es=new THREE.Scene();
+  es.add(new THREE.Mesh(new THREE.BoxGeometry(60,20,60),new THREE.MeshBasicMaterial({color:0x948f86,side:THREE.BackSide})));
+  const panel=(w,h,x,y,z,rx,ry,c)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:c}));m.position.set(x,y,z);m.rotation.set(rx,ry,0);es.add(m);};
+  panel(34,34,0,9.9,0,Math.PI/2,0,new THREE.Color(2.4,2.35,2.2));
+  panel(26,9,29.9,2,4,0,-Math.PI/2,new THREE.Color(4.5,4.6,4.8));
+  panel(20,8,0,2,-29.9,0,0,new THREE.Color(3.2,3.2,3.3));
+  const rt=pm.fromScene(es,0.035);pm.dispose();return rt.texture;}
+
+const ISL={charcoal:{label:'Charcoal paint',color:'#3b3e41',map:null,rough:.55},white:{label:'Warm white paint',color:'#e7e1d5',map:null,rough:.6},
+  oak:{label:'Light oak-tone stain',color:'#ffffff',map:'oak',rough:.65},cherry:{label:'Existing cherry (as-is)',color:'#ffffff',map:'cherry',rough:.45}};
+function applyIsland(){const f=ISL[islandFinish];mats.island.color.set(f.color);mats.island.map=f.map==='oak'?(realMode?TEX.oakHi:TEX.oakLo):(f.map==='cherry'?TEX.cherry:null);
+  mats.island.roughness=f.rough;mats.island.needsUpdate=true;
+  document.querySelectorAll('[data-island]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.island===islandFinish));
+  const pin=PINS.find(p=>p.n===10);pin.code=f.label;const pe=pinEls.find(o=>o.n===10);if(pe)pe.el.querySelector('small').textContent=f.label;
+  const li=document.querySelector('#legend li[data-n="10"] .mono');if(li)li.textContent=f.label;}
+function setStyle(real){realMode=real;
+  document.querySelectorAll('[data-style]').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.style==='real')===real));
+  if(!renderer)return;
+  mats.oak.map=real?TEX.oakHi:TEX.oakLo; mats.oak.roughness=real?.62:.72;
+  mats.counter.map=real?TEX.marble:null; mats.counter.color.set(real?'#ffffff':'#efeee9'); mats.counter.roughness=real?.18:.32;
+  mats.splash.map=real?TEX.marble:null; mats.splash.color.set(real?'#ffffff':'#e7e5df');
+  mats.floor.map=real?TEX.hex:TEX.plank; mats.floor.roughness=real?.78:.7;
+  mats.wall.color.set(real?'#ece8e0':'#f1efe9'); mats.carcass.color.set(real?'#d8c3a0':'#cdb894');
+  scene.environment=real?envTex:null; scene.background.set(real?'#cfcbc3':'#e9e7e1');
+  realGroup.visible=real; LIGHTS.hemi.intensity=real?.32:.55; LIGHTS.sun.intensity=real?.62:.85; LIGHTS.fill.intensity=real?.18:.35;
+  renderer.toneMappingExposure=real?1.0:1.05;
+  Object.values(mats).forEach(m=>m.needsUpdate=true); applyIsland();
+  viewer.querySelector('.vstamp').textContent=real?'Realistic impression · not for construction':'Concept visualization · not for construction';}
+
+function init3D(){
+  if(!window.THREE){viewer.insertAdjacentHTML('beforeend','<p style="padding:20px">The 3D viewer could not load. The plan and elevations below are unaffected.</p>');return;}
+  renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  viewer.prepend(renderer.domElement);
+  scene=new THREE.Scene();scene.background=new THREE.Color('#cfcbc3');
+  camera=new THREE.PerspectiveCamera(50,1,1,4000);
+  controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*0.53;controls.minDistance=20;controls.maxDistance=900;
+
+  TEX.oakLo=oakTex(); TEX.oakHi=grainTex('#d2b993','118,86,52','250,238,215',7); TEX.cherry=grainTex('#7a3a22','52,18,8','160,80,48',19,512);
+  TEX.marble=marbleTex(); TEX.hex=hexTex(); TEX.plank=floorTex();
+  const std=(o)=>new THREE.MeshStandardMaterial(o);
+  mats={oak:std({map:TEX.oakHi,roughness:.62,metalness:0}),oakShade:std({color:'#a99068',roughness:.8}),carcass:std({color:'#d8c3a0',roughness:.8}),
+    toe:std({color:'#3b3631',roughness:.9}),counter:std({color:'#ffffff',map:TEX.marble,roughness:.18}),splash:std({color:'#ffffff',map:TEX.marble,roughness:.25}),
+    steel:std({color:'#c9cdd0',metalness:.9,roughness:.28}),steelDark:std({color:'#8e9396',metalness:.8,roughness:.4}),
+    blackGlass:std({color:'#0e1013',metalness:.5,roughness:.08}),glass:std({color:'#a9bcc6',transparent:true,opacity:.3,roughness:.03,metalness:.2}),
+    wineBack:std({color:'#24201d',roughness:.8}),bottleA:std({color:'#3b1f24',roughness:.25}),bottleB:std({color:'#2b3a2a',roughness:.25}),
+    pull:std({color:'#2a2a2a',metalness:.7,roughness:.4}),knob:std({color:'#b3262a',roughness:.35}),grate:std({color:'#1a1a1a',roughness:.6}),griddle:std({color:'#4a4d50',metalness:.7,roughness:.35}),
+    wall:std({color:'#ece8e0',roughness:.92}),floor:std({map:TEX.hex,roughness:.78}),frame:std({color:'#2d3236',roughness:.6}),
+    island:std({color:'#3b3e41',roughness:.55}),islandTop:std({color:'#ffffff',map:TEX.marble,roughness:.2}),brass:std({color:'#9c7a45',metalness:.85,roughness:.35}),
+    lightBar:std({color:'#fff3d6',emissive:'#ffe7b0',emissiveIntensity:.9}),
+    sinkSteel:std({color:'#a9aeb2',metalness:.85,roughness:.3}),sinkStone:std({color:'#dcd9d1',roughness:.55}),basinStone:std({color:'#c9c5bc',roughness:.6}),filter:std({color:'#9a9fa3',metalness:.7,roughness:.5}),
+    ceiling:std({color:'#f4f2ed',roughness:.95}),can:std({color:'#ffffff',emissive:'#fff4e0',emissiveIntensity:1.4}),trim:std({color:'#e8e6e1',roughness:.5}),
+    frost:std({color:'#f6f2ea',emissive:'#ffe9c8',emissiveIntensity:.75,roughness:.6,side:THREE.DoubleSide}),metalDark:std({color:'#3a3632',metalness:.6,roughness:.45}),leather:std({color:'#7a3f22',roughness:.7})};
+
+  LIGHTS.hemi=new THREE.HemisphereLight(0xffffff,0xb8ab95,.32);scene.add(LIGHTS.hemi);
+  const sun=LIGHTS.sun=new THREE.DirectionalLight(0xfff6ea,.62);sun.position.set(420,480,300);sun.target.position.set(140,0,120);
+  sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-260,right:260,top:260,bottom:-260,near:100,far:1400});sun.shadow.bias=-0.0005;sun.shadow.radius=3;
+  sun.shadow.camera.updateProjectionMatrix();scene.add(sun,sun.target);
+  LIGHTS.fill=new THREE.DirectionalLight(0xfff4e6,.18);LIGHTS.fill.position.set(-100,300,300);scene.add(LIGHTS.fill);
+
+  buildWalls(); UNITS.forEach(buildUnit); UPPERS.forEach(buildUpper); buildCounters(); buildHood(); buildIsland(); buildStools();
+  fridgeMeshes=scene.children.filter(m=>m.isMesh&&m.material===mats.oak&&m.position.x>23&&m.position.x<26.5&&m.position.z>141&&m.position.z<189&&m.position.y<84);
+  envTex=makeEnv(); buildRealExtras();
+  buildPins(); setStyle(true); setView('eyeEntry',true); resize(); new ResizeObserver(resize).observe(viewer); loop();
+}
+function resize(){if(!renderer)return;const w=viewer.clientWidth,h=viewer.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+
+const VIEWS={
+  eyeEntry:{p:[176,63,262],t:[150,52,95]},
+  eyeIsland:{p:[34,63,112],t:[220,44,175]},
+  overview:{p:[355,230,345],t:[140,30,120]},
+  appliance:{p:[165,64,96],t:[0,52,96]},
+  range:{p:[168,66,250],t:[168,52,85]},
+  sink:{p:[95,72,172],t:[245,34,172]},
+  bar:{p:[360,74,168],t:[258,36,164]},
+  plan:{p:[150,560,126],t:[150,0,125]}
+};
+let anim=null;
+function setView(name,instant){const v=VIEWS[name];if(!v||!camera)return;
+  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===name));
+  const p1=new THREE.Vector3(...v.p),t1=new THREE.Vector3(...v.t);
+  if(instant||reduce){camera.position.copy(p1);controls.target.copy(t1);controls.update();return;}
+  anim={p0:camera.position.clone(),t0:controls.target.clone(),p1,t1,s:performance.now(),d:900};}
+function loop(now){requestAnimationFrame(loop);
+  if(anim){let k=Math.min(1,(performance.now()-anim.s)/anim.d);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+    camera.position.lerpVectors(anim.p0,anim.p1,k);controls.target.lerpVectors(anim.t0,anim.t1,k);if(k>=1)anim=null;}
+  if(ceiling) ceiling.visible=realMode&&camera.position.y<H-1;
+  controls.update();renderer.render(scene,camera);placePins();}
+
+const pinEls=[];
+function buildPins(){const box=$('#pins');PINS.forEach(p=>{const el=document.createElement('div');el.className='pin';el.innerHTML=`<span class="n">${p.n}</span><span class="t">${p.name}<small>${p.code}</small></span>`;box.appendChild(el);pinEls.push({el,v:new THREE.Vector3(...p.p),n:p.n});});}
+function placePins(){const w=viewer.clientWidth,h=viewer.clientHeight;pinEls.forEach(o=>{const v=o.v.clone().project(camera);
+  if(v.z>1||v.x<-1.05||v.x>1.05||v.y<-1.05||v.y>1.05){o.el.hidden=true;return;}o.el.hidden=false;o.el.style.left=((v.x+1)/2*w)+'px';o.el.style.top=((1-v.y)/2*h)+'px';});}
+
+/* ============ Legend ============ */
+$('#legend').innerHTML=PINS.map(p=>`<li data-n="${p.n}"><span class="k">${p.n}</span><div style="min-width:0"><b>${p.name}</b><span class="mono">${p.code}</span></div></li>`).join('');
+$('#legend').addEventListener('mouseover',e=>{const li=e.target.closest('li');pinEls.forEach(o=>o.el.classList.toggle('hl',li&&+li.dataset.n===o.n));});
+$('#legend').addEventListener('mouseleave',()=>pinEls.forEach(o=>o.el.classList.remove('hl')));
+
+/* ============ Schedule ============ */
+$('#sched').innerHTML='<div class="row h"><div>#</div><div>Item</div><div>Model</div><div>Location / notes</div></div>'+
+  SCHEDULE.map(r=>`<div class="row"><div><span class="k" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--sheet);font:600 12px/24px var(--f-mono);text-align:center">${r[0]}</span></div><div><b>${r[1]}</b><br>${r[2]}</div><div class="mono">${r[3]}</div><div>${r[4]}</div></div>`).join('');
+
+/* ============ Floor plan SVG ============ */
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function tagSVG(x,y,n,r=7){return `<g><circle cx="${x}" cy="${y}" r="${r}" fill="var(--svg-ink)"/><text x="${x}" y="${y+r*0.45}" text-anchor="middle" font-size="${r*1.25}" font-weight="600" fill="var(--svg-bg)" font-family="IBM Plex Mono,monospace">${n}</text></g>`;}
+function rr(run,u0,u1,d0,d1){const a=W(run,u0,d0),b=W(run,u1,d1);return {x:Math.min(a[0],b[0]),y:Math.min(a[1],b[1]),w:Math.abs(a[0]-b[0]),h:Math.abs(a[1]-b[1])};}
+function drawPlan(){
+  const vx=-30,vy=-30,vw=380,vh=312; let s=`<svg viewBox="${vx} ${vy} ${vw} ${vh}" role="img" aria-label="Floor plan sketch">`;
+  s+=`<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="var(--svg-bg)"/>`;
+  s+=`<rect x="0" y="0" width="330" height="262" fill="none" stroke="var(--svg-faint)" stroke-dasharray="2 3" stroke-width=".5"/>`;
+  // walls
+  WALLS.forEach(w=>{ if(w[4]>0) { s+=`<rect x="${w[0]}" y="${w[2]}" width="${w[1]-w[0]}" height="${w[3]-w[2]}" fill="none" stroke="var(--svg-wall)" stroke-width=".5" stroke-dasharray="3 2"/>`; return;}
+    s+=`<rect x="${w[0]}" y="${w[2]}" width="${w[1]-w[0]}" height="${w[3]-w[2]}" fill="var(--svg-wall)"/>`;});
+  // window
+  s+=`<rect x="245.5" y="20" width="5" height="40" fill="var(--svg-bg)" stroke="var(--svg-wall)" stroke-width=".6"/><line x1="248" y1="20" x2="248" y2="60" stroke="var(--svg-wall)" stroke-width=".6"/>`;
+  // door swings
+  s+=`<path d="M278 85 A19 19 0 0 0 297 104 M297 85 A19 19 0 0 1 316 104" fill="none" stroke="var(--svg-faint)" stroke-width=".6"/><line x1="278" y1="85" x2="278" y2="104" stroke="var(--svg-faint)" stroke-width=".6"/><line x1="316" y1="85" x2="316" y2="104" stroke="var(--svg-faint)" stroke-width=".6"/>`;
+  s+=`<path d="M81 45 A32 32 0 0 1 113 77" fill="none" stroke="var(--svg-faint)" stroke-width=".6"/><line x1="81" y1="45" x2="113" y2="45" stroke="var(--svg-faint)" stroke-width=".6"/>`;
+  // counters
+  const cnt=(x,y,w,h)=>s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="var(--svg-stone)" stroke="var(--svg-ink)" stroke-width=".6"/>`;
+  let r=rr('A',0,108,0,25.5);cnt(r.x,r.y,r.w,r.h); r=rr('B',81,141,0,25.5);cnt(r.x,r.y,r.w,r.h); cnt(189,85,69,25.5); cnt(231.5,110.5,26.5,129);
+  cnt(BAR.x[0],BAR.z[0],BAR.x[1]-BAR.x[0],BAR.z[1]-BAR.z[0]);
+  // units
+  UNITS.forEach(un=>{const d=un.range?28:24;const b=rr(un.run,un.u[0],un.u[1],0,d);const ap=un.appl||un.range||un.code==='OV33108';
+    const isCounter=un.h<40&&!un.range;
+    s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="${ap?'var(--svg-appl)':(isCounter?'none':'var(--svg-oak)')}" stroke="var(--svg-ink)" stroke-width="${isCounter?.35:.7}" ${isCounter?'stroke-dasharray="1.5 1.5"':''}/>`;
+    const c=W(un.run,(un.u[0]+un.u[1])/2,d*0.27); const vert=RUNS[un.run].U[1]!==0;
+    const txt=un.code; s+=`<text x="${c[0]}" y="${c[1]}" font-size="5" fill="var(--svg-ink)" text-anchor="middle" font-family="IBM Plex Mono,monospace" transform="rotate(${vert?-90:0} ${c[0]} ${c[1]})" dy="1.7">${esc(txt)}</text>`;
+  });
+  // sinks
+  [['A',51,20,15],['C',161.5,34,17]].forEach(([run,uc,w,dep])=>{const b=rr(run,uc-w/2,uc+w/2,25.5-dep-3,22.5);s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="2" fill="none" stroke="var(--svg-ink)" stroke-width=".6"/>`;});
+  // uppers (dashed)
+  UPPERS.forEach(up=>{const b=rr(up.run,up.u[0],up.u[1],0,up.d);s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="none" stroke="var(--blue)" stroke-width=".5" stroke-dasharray="3 2"/>`;});
+  {const b=rr('B',HOOD.u[0],HOOD.u[1],0,HOOD.d);s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="none" stroke="var(--blue)" stroke-width=".7" stroke-dasharray="4 2"/><text x="${b.x+b.w/2+34}" y="${b.y+b.h+13}" font-size="4.4" text-anchor="middle" fill="var(--blue)">flush 60" oak hood above (54" liner)</text>`;}
+  // island + stools
+  s+=`<rect x="${ISLAND.x[0]}" y="${ISLAND.z[0]}" width="${ISLAND.x[1]-ISLAND.x[0]}" height="${ISLAND.z[1]-ISLAND.z[0]}" fill="var(--svg-stone)" stroke="var(--svg-ink)" stroke-width=".8"/>`;
+  s+=`<rect x="108" y="169" width="24" height="16" rx="2" fill="none" stroke="var(--svg-ink)" stroke-width=".6"/><rect x="${ISLAND.x[0]+1.5}" y="${ISLAND.z[0]+1.5}" width="11.5" height="${ISLAND.z[1]-ISLAND.z[0]-3}" fill="none" stroke="var(--svg-faint)" stroke-width=".5" stroke-dasharray="1.5 1.5"/><rect x="${ISLAND.x[1]-13}" y="${ISLAND.z[0]+1.5}" width="11.5" height="${ISLAND.z[1]-ISLAND.z[0]-3}" fill="none" stroke="var(--svg-faint)" stroke-width=".5" stroke-dasharray="1.5 1.5"/><text x="127" y="198" font-size="6" text-anchor="middle" fill="var(--svg-ink)" font-weight="600">EXISTING ISLAND · REFINISHED</text><text x="127" y="206" font-size="4.6" text-anchor="middle" fill="var(--svg-ink)">62 × 104 · marble top &amp; prep sink remain · open shelf ends</text>`;
+  STOOLS.forEach(t=>s+=`<circle cx="${t.x}" cy="${t.z}" r="8" fill="none" stroke="var(--svg-ink)" stroke-width=".6"/>`);
+  // room labels
+  const lab=(x,y,t,o='')=>s+=`<text x="${x}" y="${y}" font-size="6" fill="var(--svg-faint)" text-anchor="middle" font-weight="600" letter-spacing=".6" ${o}>${t}</text>`;
+  lab(50,-12,'DINING ↑'); lab(162,40,'PANTRY — TBD'); lab(162,49,'(not in scope)'); lab(297,76,'FRENCH DOORS / PATIO'); lab(40,258,'ENTRANCE HALL ↓'); lab(300,250,'STAIRCASE SIDE'); lab(110,32,'pantry door','font-size="4.5"');
+  lab(305,170,'BAR STOOLS','transform="rotate(90 305 170)"');
+  // tags
+  const T=[[1,17,165],[2,17,118],[3,17,131],[4,17,24],[5,17,51],[6,165,104],[7,150,118],[8,240,193],[9,240,161.5],[10,96,176],[11,288,100]];
+  T.forEach(([n,x,y])=>s+=tagSVG(x,y,n,5.5));
+  s+=`<text x="${vx+6}" y="${vy+vh-6}" font-size="5.5" fill="var(--stamp)" font-weight="700" letter-spacing=".5">CONCEPT SKETCH — NOT A CONSTRUCTION DOCUMENT · NOT FIELD-MEASURED</text>`;
+  s+='</svg>'; $('#plan').innerHTML=s;
+}
+
+/* ============ Elevations ============ */
+function drawElev(runKey){
+  const R=RUNS[runKey],[a,b]=R.span,sg=(R.U[0]*R.N[1]+R.U[1]*(-R.N[0])); const span=b-a;
+  const ex=u=>sg>0?(u-a):(b-u); const ey=y=>H-y; const mL=10,mT=14,mB=26;
+  const top=runKey==='C'?58:(runKey==='D'?64:H); const vw=span+mL*2, vh=top+mT+mB; let s=`<svg viewBox="${-mL} ${H-top-mT} ${vw} ${vh}" role="img" aria-label="${esc(R.title)}">`;
+  s+=`<rect x="${-mL}" y="${H-top-mT}" width="${vw}" height="${vh}" fill="var(--svg-bg)"/>`;
+  s+=`<line x1="${-mL}" y1="${H}" x2="${span+mL}" y2="${H}" stroke="var(--svg-ink)" stroke-width="1"/>`;
+  if(top===H) s+=`<line x1="${-mL}" y1="0" x2="${span+mL}" y2="0" stroke="var(--svg-ink)" stroke-width=".8"/><text x="${span}" y="-3" font-size="3" text-anchor="end" fill="var(--svg-faint)">ceiling ~9' (verify) · cabinets scribed to ceiling</text>`;
+  const rect=(u0,u1,y0,y1,fill,sw=.6,extra='')=>{const x=Math.min(ex(u0),ex(u1)),w=Math.abs(ex(u1)-ex(u0));return `<rect x="${x}" y="${ey(y1)}" width="${w}" height="${y1-y0}" fill="${fill}" stroke="var(--svg-ink)" stroke-width="${sw}" ${extra}/>`;};
+  const txt=(u,y,t,size=4,opt={})=>{const x=ex(u),yy=ey(y);return `<text x="${x}" y="${yy}" font-size="${size}" text-anchor="middle" fill="${opt.fill||'var(--svg-ink)'}" ${opt.mono?'font-family="IBM Plex Mono,monospace"':''} ${opt.w?'font-weight="'+opt.w+'"':''} ${opt.rot?`transform="rotate(-90 ${x} ${yy})"`:''}>${esc(t)}</text>`;};
+  const pl=(u0,u1,y0,y1)=>`<line x1="${ex(u0)}" y1="${ey(y0)}" x2="${ex(u1)}" y2="${ey(y1)}" stroke="var(--svg-ink)" stroke-width=".8" stroke-linecap="round"/>`;
+  const key=[];
+  if(runKey!=='D'){
+    // backsplash zone
+    if(runKey==='A') s+=rect(0,108,36,54,'var(--svg-stone)',.3);
+    if(runKey==='B'){ s+=rect(81,258,36,54,'var(--svg-stone)',.3); s+=rect(141,189,36,66,'var(--svg-stone)',.3);}
+    UNITS.filter(u=>u.run===runKey).forEach(un=>{
+      const [u0,u1]=un.u, uc=(u0+u1)/2, w=u1-u0;
+      key.push([un.code,un.name,un.tag]);
+      if(un.range){ s+=rect(u0,u1,4,36,'var(--svg-appl)',.8); s+=rect(u0+.6,u0+30.3,6,28,'none',.5); s+=rect(u0+30.7,u1-.6,6,28,'none',.5);
+        s+=rect(u0+3,u0+27.5,10,24,'var(--svg-faint)',.3,'fill-opacity=".35"');s+=rect(u0+33.5,u1-3,10,24,'var(--svg-faint)',.3,'fill-opacity=".35"');
+        for(let i=0;i<10;i++){const u=u0+4+i*(w-8)/9;s+=`<circle cx="${ex(u)}" cy="${ey(31.8)}" r="1" fill="var(--stamp)"/>`;}
+        s+=rect(u0,u1,36,41,'var(--svg-appl)',.5); s+=rect(u0,u1,0,4,'var(--svg-ink)',.3);
+        s+=`<rect x="${Math.min(ex(u0),ex(u1))+8}" y="${ey(19)}" width="${w-16}" height="8" fill="var(--svg-bg)" opacity=".9"/>`; s+=txt(uc,15.6,'Wolf 48" dual-fuel range',2.4,{w:600}); s+=txt(uc,12.4,'DF48650G/S/P',2.2,{mono:1}); s+=tagSVG(ex(uc),ey(44.5),un.tag,2.8); return; }
+      s+=rect(u0,u1,0,4,'var(--svg-ink)',.3,'fill-opacity=".75"'); // toe
+      un.fr.forEach(f=>{const [k,y0,y1,o={}]=f; const fu0=(o.u||un.u)[0],fu1=(o.u||un.u)[1],fc=(fu0+fu1)/2;
+        const appl=['wine','oven','speed'].includes(k); const k0=k; const fill=appl?'var(--svg-appl)':(k==='apron'?'var(--svg-stone)':(k==='open'?'var(--svg-bg)':'var(--svg-oak)'));
+        if(k==='door2'||k==='stack2'){s+=rect(fu0,fc,y0,y1,fill);s+=rect(fc,fu1,y0,y1,fill);}
+        else if(k==='fridge'){s+=rect(fu0,fc,y0,y1,fill);s+=rect(fc,fu1,y0,y1,fill);s+=pl(fc-1.8,fc-1.8,y0+6,y1-8)+pl(fc+1.8,fc+1.8,y0+6,y1-8);}
+        else s+=rect(fu0,fu1,y0,y1,fill);
+        if(k==='drawer'||k==='fdrawer') s+=pl(fc-Math.min(9,(fu1-fu0)*.27),fc+Math.min(9,(fu1-fu0)*.27),y1-1.6,y1-1.6);
+        if(k==='dw') s+=pl(fc-7,fc+7,y1-1.8,y1-1.8);
+        if(k==='open'){const n=3;for(let i=1;i<=n;i++){const y=y0+(y1-y0)*i/(n+1);s+=pl(fu0+.8,fu1-.8,y,y);}}
+        if(k==='wine'){s+=rect(fu0+2,fu1-2,y0+3,y1-2,'var(--svg-faint)',.3,'fill-opacity=".3"');}
+        if(k==='oven'||k==='speed'){s+=rect(fu0+2.5,fu1-2.5,y0+2.5,(k==='speed'?y1-7:y1-8.5),'var(--svg-faint)',.3,'fill-opacity=".35"');s+=pl(fu0+4,fu1-4,y1-(k==='speed'?5.6:7.1),y1-(k==='speed'?5.6:7.1));}
+        if(o.tag){ s+=txt(fc,(y0+y1)/2+.5,o.name,2.3,{w:600}); s+=txt(fc,(y0+y1)/2-2.6,o.code,2.2,{mono:1}); s+=tagSVG(ex(fu0+3.2),ey(y1-3.2),o.tag,2.4); key.push([o.code,o.name,o.tag]);}
+      });
+      // unit label
+      const narrow=w<20, ly=un.fr.some(f=>f[0]==='open')?20:16;
+      if(un.code==='CL4850UFD/O'){ s+=`<rect x="${Math.min(ex(u0),ex(u1))+4}" y="${ey(64)}" width="${w-8}" height="9" fill="var(--svg-bg)" opacity=".85"/>`; s+=txt(uc,60.6,'Sub-Zero 48" refrigerator',2.6,{w:600}); s+=txt(uc,57,'CL4850UFD/O · oak panels',2.2,{mono:1}); s+=tagSVG(ex(u0+5),ey(80),1,2.6); s+=txt(uc,95.5,'W4824-24',2.4,{mono:1}); }
+      else if(un.code==='OV33108'){ s+=txt(uc,12,'OV33108',2.4,{mono:1}); s+=txt(uc,81,'OV33108',2.4,{mono:1}); }
+      else if(narrow){ s+=txt(uc+.9,ly,un.code,2.5,{mono:1,rot:1}); if(un.tag) s+=tagSVG(ex(uc),ey(un.h-3.5),un.tag,2.4); }
+      else { s+=`<rect x="${ex(uc)-un.code.length*0.85-1}" y="${ey(9.6)}" width="${un.code.length*1.7+2}" height="3.6" fill="var(--svg-bg)" opacity=".9"/>`; s+=txt(uc,6.9,un.code,2.5,{mono:1}); if(un.tag) s+=tagSVG(ex(u0+3.5),ey(un.h-3.5),un.tag,2.4); }
+    });
+    // counters
+    if(runKey==='A') s+=rect(0,108,34.5,36,'var(--svg-stone)',.7);
+    if(runKey==='B'){ s+=rect(81,141,34.5,36,'var(--svg-stone)',.7); s+=rect(189,258,34.5,36,'var(--svg-stone)',.7);}
+    if(runKey==='C'){ s+=rect(85,109,34.5,36,'var(--svg-stone)',.4,'stroke-dasharray="1.5 1"'); s+=rect(109,239.5,34.5,36,'var(--svg-stone)',.7); s+=rect(85,240.5,36,BAR.y+1.5,'none',.4,'stroke-dasharray="2 1.5"'); s+=txt(162,38.4,'raised bar ledge beyond',2.3,{fill:'var(--svg-faint)'});
+      s+=txt(97,20,'blind corner',2.3,{fill:'var(--svg-faint)'}); s+=txt(97,16.5,'(BBC45 behind)',2.3,{fill:'var(--svg-faint)'});}
+    if(runKey==='A'){ s+=`<rect x="${ex(66)-1}" y="${ey(48)}" width="0" height="0"/>`; s+=txt(51,39,'butler’s sink (fixture TBD)',2.3,{fill:'var(--svg-faint)'});}
+    if(runKey==='C'){ s+=txt(161.5,38.5,'',3);}
+    // uppers
+    UPPERS.filter(u=>u.run===runKey).forEach(up=>{const [u0,u1]=up.u,uc=(u0+u1)/2;key.push([up.code+(up.stk?' + '+up.stk:''),up.name]);
+      up.fr.forEach(f=>{const [k,y0,y1]=f;if(k==='door2'||k==='stack2'){s+=rect(u0,uc,y0,y1,'var(--svg-oak)');s+=rect(uc,u1,y0,y1,'var(--svg-oak)');if(k==='door2')s+=pl(uc-1.5,uc-1.5,y0+2,y0+9)+pl(uc+1.5,uc+1.5,y0+2,y0+9);}
+        else if(k==='open'){s+=rect(u0,u1,y0,y1,'var(--svg-bg)');for(let i=1;i<=3;i++){const y=y0+(y1-y0)*i/4;s+=pl(u0+.8,u1-.8,y,y);}}
+        else {s+=rect(u0,u1,y0,y1,'var(--svg-oak)'); if(k==='lift'&&y0<60) s+=pl(uc-11,uc+11,y0+1.6,y0+1.6); if(k==='door') s+=pl(u1-2,u1-2,y0+2,y0+10);}});
+      if(u1-u0<20) s+=txt(uc+.9,78,up.code,2.5,{mono:1,rot:1}); else {s+=txt(uc,79,up.code,2.5,{mono:1}); if(up.stk) s+=txt(uc,100,up.stk,2.2,{mono:1}); if(up.code==='W4440-LU') s+=txt(uc,70,'lift-up, wood or glass',2.3,{fill:'var(--svg-ink)'});}
+    });
+    if(runKey==='B'){ const h=HOOD,hm=(h.u[0]+h.u[1])/2; s+=rect(h.u[0],h.u[1],h.y[0],94,'var(--svg-oak)',.7); s+=rect(h.u[0],hm,94.25,H,'var(--svg-oak)',.6); s+=rect(hm,h.u[1],94.25,H,'var(--svg-oak)',.6);
+      s+=`<line x1="${ex(h.liner[0])}" y1="${ey(h.y[0])+.6}" x2="${ex(h.liner[1])}" y2="${ey(h.y[0])+.6}" stroke="var(--blue)" stroke-width="1.2"/>`;
+      s+=txt(165,84,'Flush 60" white rift oak slab hood',2.6,{w:600}); s+=txt(165,80,'Wolf 54" pro hood liner, 19" deep',2.4); s+=txt(165,76.5,'PL521912',2.3,{mono:1}); s+=txt(165,70,'face flush with 19" range-wall cabinets',2.1,{fill:'var(--svg-faint)'}); s+=tagSVG(ex(165),ey(89.5),7,2.6);
+      key.push(['PL521912','Wolf 54" pro hood liner in flush 60" oak hood',7]);}
+  } else {
+    // bar stool side
+    const z0=85,z1=239.5; for(let i=0;i<4;i++){const p=z0+(z1-z0)*i/4,q=z0+(z1-z0)*(i+1)/4;s+=rect(p+.1,q-.1,4,BAR.y,'var(--svg-oak)');}
+    s+=rect(z0,z1,0,4,'var(--svg-ink)',.3,'fill-opacity=".75"'); s+=rect(83,241,BAR.y,BAR.y+1.5,'var(--svg-stone)',.7);
+    s+=txt(162,50,'White rift oak slab back panels (4) · raised bar-height ledge, ~42" (confirm)',2.5,{w:600});
+    STOOLS.forEach(t=>{const u=t.z;s+=`<g stroke="var(--svg-faint)" stroke-width=".7" fill="none"><line x1="${ex(u-7)}" y1="${ey(30)}" x2="${ex(u+7)}" y2="${ey(30)}"/><line x1="${ex(u)}" y1="${ey(30)}" x2="${ex(u)}" y2="${ey(1)}"/><line x1="${ex(u-6)}" y1="${ey(10)}" x2="${ex(u+6)}" y2="${ey(10)}"/><line x1="${ex(u-7)}" y1="${ey(0.5)}" x2="${ex(u+7)}" y2="${ey(0.5)}"/></g>`;});
+    s+=tagSVG(ex(162),ey(56),11,2.6); key.push(['—','Bar-height ledge + 4 stools (in front, dashed)',11]);
+  }
+  // side labels
+  s+=`<text x="0" y="${H+9}" font-size="3" fill="var(--svg-faint)" font-weight="600">← ${esc(R.l)}</text><text x="${span}" y="${H+9}" font-size="3" text-anchor="end" fill="var(--svg-faint)" font-weight="600">${esc(R.r)} →</text>`;
+  s+=`<text x="${span/2}" y="${H+19}" font-size="2.8" text-anchor="middle" fill="var(--stamp)" font-weight="700" letter-spacing=".3">CONCEPT ELEVATION — NOT A CONSTRUCTION DOCUMENT</text>`;
+  s+='</svg>';
+  const seen=new Set(); const keyHtml=key.filter(k=>{const id=k[0]+k[1];if(seen.has(id))return false;seen.add(id);return true;}).map(k=>`<span>${k[2]?'('+k[2]+') ':''}<b>${esc(k[0])}</b> ${esc(k[1])}</span>`).join('');
+  return `<div class="elev"><div class="cap"><h3>${esc(R.title)}</h3><span class="hint">Viewed facing the cabinets</span></div><div class="sheet"><div class="drawing">${s}</div><div class="key">${keyHtml}</div></div></div>`;
+}
+$('#elevs').innerHTML=['A','B','C','D'].map(drawElev).join('')+`<p class="hint" style="margin:0">Cabinet codes use generic industry nomenclature (B = base, W = wall, SB = sink base, BWB = waste-basket base, BBC = blind corner, OV = oven tall), not a specific manufacturer's catalog. Appliance codes are the actual manufacturer model numbers.</p>`;
+drawPlan();
+
+/* ============ controls ============ */
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+$('#tLabels').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);$('#pins').classList.toggle('nolabels',!on);});
+$('#tFridge').addEventListener('click',e=>{const steel=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',steel);
+  e.currentTarget.textContent=steel?'Fridge: stainless':'Fridge: oak panels';fridgeMeshes.forEach(m=>m.material=steel?mats.steel:mats.oak);
+  PINS[0].code=steel?'CL4850UFD/S':'CL4850UFD/O'; const t=pinEls[0]&&pinEls[0].el.querySelector('small'); if(t) t.textContent=PINS[0].code;});
+document.querySelectorAll('[data-style]').forEach(b=>b.addEventListener('click',()=>setStyle(b.dataset.style==='real')));
+document.querySelectorAll('[data-island]').forEach(b=>b.addEventListener('click',()=>{islandFinish=b.dataset.island;if(renderer)applyIsland();}));
+if(matchMedia('(max-width:640px)').matches){$('#tLabels').setAttribute('aria-pressed','false');$('#pins').classList.add('nolabels');}
+
+try{init3D();}catch(err){console.error(err);viewer.insertAdjacentHTML('beforeend','<p style="padding:20px">The 3D viewer could not start on this device. The plan and elevations below are unaffected.</p>');}
+})();
+</script>
+
+</body></html>
