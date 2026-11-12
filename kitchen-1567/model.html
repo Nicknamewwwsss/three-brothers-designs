@@ -123,7 +123,7 @@ section{display:flex;flex-direction:column;gap:12px}
       <span>Sheet</span><b>Estimated sizes · Rev F</b>
       <span>Based on</span><b>Sketches rev. 11/2/2026 (7 pp.)</b>
       <span>Kitchen</span><b>White rift oak, slab</b>
-      <span>Pantry</span><b>White maple (rift oak option)</b>
+      <span>Pantry</span><b>Painted white maple or white rift oak</b>
       <span>Status</span><b style="color:var(--stamp)">Visualization only</b>
     </div>
   </header>
@@ -155,6 +155,10 @@ section{display:flex;flex-direction:column;gap:12px}
       <button class="btn" data-stone="soapMosaic" aria-pressed="false">Soapstone + charcoal mosaic</button>
       <button class="btn" data-stone="soapWhite" aria-pressed="false">Soapstone + warm white mosaic</button>
       <button class="btn" data-stone="greige" aria-pressed="false">Grey limestone + sage mosaic</button>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="tl">Pantry</span>
+      <button class="btn" data-pantry="paint" aria-pressed="true">Painted white</button>
+      <button class="btn" data-pantry="oak" aria-pressed="false">White rift oak</button>
     </div>
     <div class="toolbar" role="toolbar" aria-label="Camera views">
       <span class="tl">View</span>
@@ -379,7 +383,7 @@ const PINS = [
   {n:13,name:'Existing island, exotic slab top',code:'62×104 · client selection',p:[131,40,189]},
   {n:14,name:'Sub-Zero 15" wine storage',code:'DEU1550W/R',p:[79,18,71.5]},
   {n:15,name:'Pocket door to pantry',code:'26"×84" rift oak, inset',p:[81,60,47]},
-  {n:16,name:'Walk-in pantry, walls 4 & 6',code:'white maple · 12/17/18/24" deep',p:[176,72,40]},
+  {n:16,name:'Walk-in pantry, walls 4 & 6',code:'painted white or rift oak · 12/17/18/24" deep',p:[176,72,40]},
   {n:17,name:'Rift oak clad wall + swing door',code:'to dining · new hardware',p:[48,70,1.5]}
 ];
 const SCHEDULE = [
@@ -538,17 +542,17 @@ function proHandle(run,u0,u1,y,d){const p0=W(run,u0+3,d+2.4),p1=W(run,u1-3,d+2.4
   [u0+4,u1-4].forEach(u=>rbox(run,u-0.4,u+0.4,d,d+2.4,y-0.4,y+0.4,mats.steel));}
 function buildUnit(un){
   const run=un.run,[u0,u1]=un.u,dep=un.dep||24;
-  FM=un.white?mats.white:mats.oak; const carc=un.white?mats.whiteCarcass:mats.carcass;
+  FM=un.white?mats.pantry:mats.oak; const carc=un.white?mats.pantryCarcass:mats.carcass;
   if(un.range){ buildRange(un); return; }
   if(un.panel){ rbox(run,u0,u1,0,dep+0.75,0,un.h,FM); return; }
   const isOpen=un.fr.length===1&&un.fr[0][0]==='open';
   rbox(run,u0,u1,0,dep-3,0,4.5,mats.toe);
   if(isOpen){ rbox(run,u0,u0+0.75,0,dep,4.5,un.h,FM);rbox(run,u1-0.75,u1,0,dep,4.5,un.h,FM);
-    rbox(run,u0,u1,0,dep,4.5,5.25,FM);rbox(run,u0,u1,0,0.6,4.5,un.h,un.white?mats.whiteShade:mats.oakShade);
+    rbox(run,u0,u1,0,dep,4.5,5.25,FM);rbox(run,u0,u1,0,0.6,4.5,un.h,un.white?mats.pantryShade:mats.oakShade);
     if(un.h>60) rbox(run,u0,u1,0,dep,un.h-0.75,un.h,FM);
   } else if(un.fr.some(f=>f[0]==='dw'||f[0]==='wine'||f[0]==='false'||f[0]==='apron')) rbox(run,u0,u1,0,dep-0.75,4.5,un.h,carc);
   else if(un.code==='DET3050CI') shell(run,u0,u1,dep-0.75,4.5,un.h,un.fr,{side:carc,inner:mats.fridgeIn,shelf:mats.glass});
-  else shell(run,u0,u1,dep-0.75,4.5,un.h,un.fr,{side:carc,inner:un.white?mats.whiteCarcass:mats.interior});
+  else shell(run,u0,u1,dep-0.75,4.5,un.h,un.fr,{side:carc,inner:un.white?mats.pantryCarcass:mats.interior});
   un.fr.forEach(f=>buildFront(run,un.u,f,isOpen?dep:dep-0.75));
 }
 function buildRange(un){
@@ -566,16 +570,16 @@ function buildRange(un){
   rbox(run,u0+0.1,u1-0.1,0,3,36,41,mats.steel);
 }
 function buildUpper(up){
-  const run=up.run,[u0,u1]=up.u,[y0,y1]=up.y,D=up.d; FM=up.white?mats.white:mats.oak; const isOpen=up.fr[0][0]==='open';
-  if(isOpen){if(up.openEnd!=='u0')rbox(run,u0,u0+0.75,0,D,y0,y1,FM);if(up.openEnd!=='u1')rbox(run,u1-0.75,u1,0,D,y0,y1,FM);rbox(run,u0,u1,0,D,y0,y0+0.75,FM);rbox(run,u0,u1,0,0.6,y0,y1,up.white?mats.whiteShade:mats.oakShade);
+  const run=up.run,[u0,u1]=up.u,[y0,y1]=up.y,D=up.d; FM=up.white?mats.pantry:mats.oak; const isOpen=up.fr[0][0]==='open';
+  if(isOpen){if(up.openEnd!=='u0')rbox(run,u0,u0+0.75,0,D,y0,y1,FM);if(up.openEnd!=='u1')rbox(run,u1-0.75,u1,0,D,y0,y1,FM);rbox(run,u0,u1,0,D,y0,y0+0.75,FM);rbox(run,u0,u1,0,0.6,y0,y1,up.white?mats.pantryShade:mats.oakShade);
     buildFront(run,up.u,['open',y0,y1],D); return;}
-  if(up.filler) rbox(run,u0,u1,0,D-0.75,y0,y1,up.white?mats.whiteCarcass:mats.carcass);
-  else shell(run,u0,u1,D-0.75,y0,y1,up.fr,{side:up.white?mats.whiteCarcass:mats.carcass,inner:up.white?mats.whiteCarcass:mats.interior,shelf:up.fr[0][0]==='glass'?mats.glass:null});
+  if(up.filler) rbox(run,u0,u1,0,D-0.75,y0,y1,up.white?mats.pantryCarcass:mats.carcass);
+  else shell(run,u0,u1,D-0.75,y0,y1,up.fr,{side:up.white?mats.pantryCarcass:mats.carcass,inner:up.white?mats.pantryCarcass:mats.interior,shelf:up.fr[0][0]==='glass'?mats.glass:null});
   up.fr.forEach(f=>buildFront(run,up.u,f,D-0.75));
   if(y0>40&&!up.stack&&!up.filler&&y0<70) rbox(run,u0+0.5,u1-0.5,1,D-2,y0-0.4,y0,mats.lightBar,{cast:false});
 }
 // 3″ scribe molding from the 99″ line to the ceiling
-function buildScribe(){[['A',0,88,12],['A',88,184,24],['B',76,259,19],['E',0,33,24],['E',33,61,24],['E',61,82,18],['F2',108,144,12,1],['F',144,214,17,1],['G',108,214,18,1]].forEach(([r,a,b,d,w])=>rbox(r,a,b,d-0.75,d,TOP,H,w?mats.white:mats.oak));}
+function buildScribe(){[['A',0,88,12],['A',88,184,24],['B',76,259,19],['E',0,33,24],['E',33,61,24],['E',61,82,18],['F2',108,144,12,1],['F',144,214,17,1],['G',108,214,18,1]].forEach(([r,a,b,d,w])=>rbox(r,a,b,d-0.75,d,TOP,H,w?mats.pantry:mats.oak));}
 function faucet(x,z,dx,dz){cyl(x,43,z,0.6,14,mats.steel);
   const g=new THREE.TorusGeometry(2.3,0.55,10,20,Math.PI);const m=new THREE.Mesh(g,mats.steel);m.position.set(x+dx*2.3,50,z+dz*2.3);m.rotation.y=dx!==0?0:Math.PI/2;m.castShadow=true;add(m);
   cyl(x+dx*4.6,48,z+dz*4.6,0.55,4,mats.steel);}
@@ -671,6 +675,12 @@ function makeEnv(){const pm=new THREE.PMREMGenerator(renderer);const es=new THRE
   const rt=pm.fromScene(es,0.035);pm.dispose();return rt.texture;}
 const ISL={charcoal:{label:'Charcoal paint',color:'#3b3e41',map:null,rough:.55},white:{label:'Warm white paint',color:'#e7e1d5',map:null,rough:.6},
   oak:{label:'Light oak-tone stain',color:'#ffffff',map:'oak',rough:.65},cherry:{label:'Existing cherry (as-is)',color:'#ffffff',map:'cherry',rough:.45}};
+let pantryOpt='paint';
+function applyPantry(){document.querySelectorAll('[data-pantry]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pantry===pantryOpt));if(!renderer)return;const oak=pantryOpt==='oak';
+  mats.pantry.map=oak?(realMode?TEX.oakHi:TEX.oakLo):TEX.white; mats.pantry.color.set('#ffffff'); mats.pantry.roughness=oak?.62:.55;
+  mats.pantryCarcass.color.set(oak?'#d8c3a0':'#ecebe6'); mats.pantryShade.color.set(oak?'#a99068':'#d9d6cf');
+  [mats.pantry,mats.pantryCarcass,mats.pantryShade].forEach(m=>m.needsUpdate=true);
+  document.querySelectorAll('.pantry-finish').forEach(e=>e.textContent=oak?'white rift oak':'painted white maple');}
 const STONES={
   soap:{counter:'soap',splash:'soap',mosaic:'mzChar',flat:['#3d4143','#3d4143','#3f4245'],sink:'#45494b',rough:.55,label:'Soapstone counters & soapstone backsplash'},
   soapMosaic:{counter:'soap',splash:'mzCharS',mosaic:'mzChar',flat:['#3d4143','#44474a','#44474a'],sink:'#45494b',rough:.55,label:'Soapstone counters, charcoal mosaic backsplash'},
@@ -678,6 +688,7 @@ const STONES={
   greige:{counter:'limestone',splash:'mzSageS',mosaic:'mzSage',flat:['#c9c4ba','#a3af97','#a3af97'],sink:'#bdb8ae',rough:.45,label:'Honed grey limestone counters, sage mosaic backsplash'}};
 let stoneOpt='soap';
 function applyStone(){const o=STONES[stoneOpt];$('#tDoors').addEventListener('click',e=>setDoors(e.currentTarget.getAttribute('aria-pressed')!=='true'));
+document.querySelectorAll('[data-pantry]').forEach(b=>b.addEventListener('click',()=>{pantryOpt=b.dataset.pantry;applyPantry();}));
 document.querySelectorAll('[data-stone]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.stone===stoneOpt));if(!renderer)return;
   const set=(m,key,flat)=>{m.map=realMode?TEX[key]:null;m.color.set(realMode?'#ffffff':flat);m.needsUpdate=true;};
   set(mats.counter,o.counter,o.flat[0]); set(mats.stonePanel,o.counter,o.flat[0]); set(mats.splash,o.splash,o.flat[1]); set(mats.mosaic,o.mosaic,o.flat[2]);
@@ -690,7 +701,7 @@ function setStyle(real){realMode=real;
   document.querySelectorAll('[data-style]').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.style==='real')===real));
   if(!renderer)return;
   mats.oak.map=real?TEX.oakHi:TEX.oakLo; mats.oak.roughness=real?.62:.72;
-  applyStone();
+  applyStone(); applyPantry();
   mats.exotic.map=real?TEX.exotic:null; mats.exotic.color.set(real?'#ffffff':'#d9d2c4');
   mats.floor.map=real?TEX.hex:TEX.plank; mats.wall.color.set(real?'#ece8e0':'#f1efe9');
   scene.environment=real?envTex:null; scene.background.set(real?'#cfcbc3':'#e9e7e1');
@@ -730,7 +741,7 @@ function init3D(){
     island:std({color:'#3b3e41',roughness:.55}),brass:std({color:'#9c7a45',metalness:.85,roughness:.35}),
     lightBar:std({color:'#fff3d6',emissive:'#ffe7b0',emissiveIntensity:.9}),
     sinkSteel:std({color:'#a9aeb2',metalness:.85,roughness:.3}),sinkStone:std({color:'#dcd9d1',roughness:.55}),basinStone:std({color:'#c9c5bc',roughness:.6}),filter:std({color:'#9a9fa3',metalness:.7,roughness:.5}),
-    ceiling:std({color:'#f4f2ed',roughness:.95}),interior:std({color:'#eadfca',roughness:.75}),fridgeIn:std({color:'#f4f6f7',emissive:'#ffffff',emissiveIntensity:.18,roughness:.5}),can:std({color:'#ffffff',emissive:'#fff4e0',emissiveIntensity:1.4}),trim:std({color:'#e8e6e1',roughness:.5}),
+    ceiling:std({color:'#f4f2ed',roughness:.95}),pantry:std({color:'#ffffff',map:TEX.white,roughness:.55}),pantryShade:std({color:'#d9d6cf',roughness:.8}),pantryCarcass:std({color:'#ecebe6',roughness:.8}),interior:std({color:'#eadfca',roughness:.75}),fridgeIn:std({color:'#f4f6f7',emissive:'#ffffff',emissiveIntensity:.18,roughness:.5}),can:std({color:'#ffffff',emissive:'#fff4e0',emissiveIntensity:1.4}),trim:std({color:'#e8e6e1',roughness:.5}),
     frost:std({color:'#f6f2ea',emissive:'#ffe9c8',emissiveIntensity:.75,roughness:.6,side:THREE.DoubleSide}),metalDark:std({color:'#3a3632',metalness:.6,roughness:.45}),leather:std({color:'#7a3f22',roughness:.7})};
   LIGHTS.hemi=new THREE.HemisphereLight(0xffffff,0xb8ab95,.32);scene.add(LIGHTS.hemi);
   const sun=LIGHTS.sun=new THREE.DirectionalLight(0xfff6ea,.62);sun.position.set(440,480,320);sun.target.position.set(150,0,120);
