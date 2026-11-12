@@ -168,6 +168,7 @@ section{display:flex;flex-direction:column;gap:12px}
       <button class="btn" data-view="pantry">Pantry (4 &amp; 6)</button>
       <button class="btn" data-view="plan">Top view</button>
       <span class="sep" aria-hidden="true"></span>
+      <button class="btn" id="tDoors" aria-pressed="false">Open doors &amp; drawers</button>
       <button class="btn" id="tLabels" aria-pressed="true">Labels</button>
     </div>
     <div class="sheet viewer" id="viewer">
@@ -459,7 +460,7 @@ function pullH(run,uc,y,d,len){return rbox(run,uc-len/2,uc+len/2,d,d+0.9,y-0.3,y
 function pullV(run,u,y0,y1,d){return rbox(run,u-0.3,u+0.3,d,d+0.9,y0,y1,mats.pull);}
 function slab(run,u0,u1,y0,y1,d,mat){const g=0.125;return rbox(run,u0+g,u1-g,d,d+0.75,y0+g,y1-g,mat||FM);}
 
-function buildFront(run,uu,f,d){
+function buildFrontRaw(run,uu,f,d){
   const [k,y0,y1,o={}]=f; const u0=(o.u||uu)[0],u1=(o.u||uu)[1],uc=(u0+u1)/2;
   switch(k){
     case 'door': { slab(run,u0,u1,y0,y1,d); const pu=o.left?u0+2:u1-2; if(y0>50) pullV(run,pu,y0+2,y0+9,d+0.75); else pullV(run,pu,y1-9,y1-2,d+0.75); break;}
@@ -487,6 +488,50 @@ function buildFront(run,uu,f,d){
     case 'apron': rbox(run,u0+0.2,u1-0.2,d,d+1.25,y0,y1+1.5,mats.sinkStone); break;
   }
 }
+
+/* ---------- opening doors & drawers ---------- */
+const MOVERS=[]; let moveT=0, moveGoal=0, prevTarget=null;
+function beginMove(m){const outer=new THREE.Group(),inner=new THREE.Group();outer.add(inner);scene.add(outer);
+  const P=m.pivot||[0,0,0];outer.position.set(P[0],P[1],P[2]);inner.position.set(-P[0],-P[1],-P[2]);m.obj=outer;m.base=P;MOVERS.push(m);prevTarget=target;target=inner;}
+function endMove(){target=prevTarget;}
+function swingSign(run,F){const N=RUNS[run].N;return (F[1]*N[0]-F[0]*N[1])>0?1:-1;}
+function buildFront(run,uu,f,d){
+  const [k,y0,y1,o={}]=f; const u0=(o.u||uu)[0],u1=(o.u||uu)[1],uc=(u0+u1)/2, R=RUNS[run];
+  if(k==='door2'){ buildFront(run,[u0,uc],['door',y0,y1,{}],d); buildFront(run,[uc,u1],['door',y0,y1,{left:1}],d); return; }
+  let m=null;
+  if(k==='door'||k==='glass'||k==='fridge1'||k==='wine'){
+    const hingeAtU1=(k==='door'&&o.left)||(k==='fridge1'&&o.hinge); const hu=hingeAtU1?u1:u0;
+    const F=hingeAtU1?[-R.U[0],-R.U[1]]:[R.U[0],R.U[1]]; const P=W(run,hu,d);
+    m={type:'swing',pivot:[P[0],0,P[1]],amax:swingSign(run,F)*(k==='fridge1'?1.9:1.75)};
+  } else if(k==='drawer'||k==='fdrawer'||k==='warm'){
+    const dist=Math.min(Math.max(d-3,8),18); m={type:'slide',vec:[R.N[0]*dist,0,R.N[1]*dist]};
+  } else if(k==='flip'){
+    const P=W(run,uc,d+0.75); const axis=R.U[0]!==0?'x':'z'; const sg=axis==='x'?-R.N[1]:R.N[0];
+    m={type:'flip',pivot:[P[0],y1,P[1]],axis,amax:sg*1.4};
+  }
+  if(m) beginMove(m);
+  buildFrontRaw(run,uu,f,d);
+  if(m&&m.type==='slide'){ // drawer box travels with the front
+    const L=Math.min(d-2,20), bm=mats.interior, a=u0+1.25, b=u1-1.25, yb=y0+1.2, yt=Math.max(yb+2,y1-2.6);
+    rbox(run,a,a+0.5,d-L,d,yb,yt,bm,{cast:false}); rbox(run,b-0.5,b,d-L,d,yb,yt,bm,{cast:false});
+    rbox(run,a,b,d-L,d-L+0.5,yb,yt,bm,{cast:false}); rbox(run,a,b,d-L,d,yb,yb+0.5,bm,{cast:false});
+  }
+  if(m) endMove();
+}
+window.__openAll=()=>{moveGoal=1;moveT=0.999;tickDoors(100);};
+function setDoors(open){moveGoal=open?1:0;const b=document.getElementById('tDoors');if(b)b.setAttribute('aria-pressed',open);}
+function tickDoors(dt){if(moveT===moveGoal)return;const sp=dt/900;moveT=moveGoal>moveT?Math.min(moveGoal,moveT+sp):Math.max(moveGoal,moveT-sp);
+  const e=moveT<.5?2*moveT*moveT:1-Math.pow(-2*moveT+2,2)/2;
+  MOVERS.forEach(m=>{if(m.type==='swing')m.obj.rotation.y=m.amax*e;else if(m.type==='flip')m.obj.rotation[m.axis]=m.amax*e;
+    else if(m.type==='slide')m.obj.position.set(m.vec[0]*e,0,m.vec[2]*e);else if(m.type==='pocket')m.obj.position.set(m.vec[0]*e,0,m.vec[2]*e);});}
+// hollow carcass with dividers + shelves so open doors show an interior
+function shell(run,u0,u1,dep,y0,y1,fronts,o={}){const sideM=o.side||mats.carcass,inM=o.inner||mats.interior,d=dep;
+  rbox(run,u0,u0+0.75,0,d,y0,y1,sideM);rbox(run,u1-0.75,u1,0,d,y0,y1,sideM);rbox(run,u0+0.75,u1-0.75,0,0.5,y0,y1,inM);
+  rbox(run,u0+0.75,u1-0.75,0,d,y0,y0+0.75,inM);rbox(run,u0+0.75,u1-0.75,0,d,y1-0.75,y1,inM);
+  const lv=new Set();fronts.forEach(f=>{if(f[1]>y0+1)lv.add(f[1]);if(f[2]<y1-1)lv.add(f[2]);});
+  lv.forEach(y=>rbox(run,u0+0.75,u1-0.75,0.5,d,y-0.375,y+0.375,inM,{cast:false}));
+  fronts.filter(f=>['door','door2','glass','fridge1'].includes(f[0])).forEach(f=>{const h=f[2]-f[1],n=Math.max(1,Math.round(h/13)-1);
+    for(let i=1;i<=n;i++){const y=f[1]+h*i/(n+1);rbox(run,u0+0.75,u1-0.75,1,d-1,y-0.3,y+0.3,o.shelf||inM,{cast:false});}});}
 // Wolf professional tubular handle with end posts
 function proHandle(run,u0,u1,y,d){const p0=W(run,u0+3,d+2.4),p1=W(run,u1-3,d+2.4);const g=new THREE.CylinderGeometry(0.55,0.55,u1-u0-6,14);const m=new THREE.Mesh(g,mats.steel);
   m.position.set((p0[0]+p1[0])/2,y,(p0[1]+p1[1])/2); if(RUNS[run].U[0]) m.rotation.z=Math.PI/2; else m.rotation.x=Math.PI/2; m.castShadow=true; add(m);
@@ -501,7 +546,9 @@ function buildUnit(un){
   if(isOpen){ rbox(run,u0,u0+0.75,0,dep,4.5,un.h,FM);rbox(run,u1-0.75,u1,0,dep,4.5,un.h,FM);
     rbox(run,u0,u1,0,dep,4.5,5.25,FM);rbox(run,u0,u1,0,0.6,4.5,un.h,un.white?mats.whiteShade:mats.oakShade);
     if(un.h>60) rbox(run,u0,u1,0,dep,un.h-0.75,un.h,FM);
-  } else rbox(run,u0,u1,0,dep-0.75,4.5,un.h,carc);
+  } else if(un.fr.some(f=>f[0]==='dw'||f[0]==='wine'||f[0]==='false'||f[0]==='apron')) rbox(run,u0,u1,0,dep-0.75,4.5,un.h,carc);
+  else if(un.code==='DET3050CI') shell(run,u0,u1,dep-0.75,4.5,un.h,un.fr,{side:carc,inner:mats.fridgeIn,shelf:mats.glass});
+  else shell(run,u0,u1,dep-0.75,4.5,un.h,un.fr,{side:carc,inner:un.white?mats.whiteCarcass:mats.interior});
   un.fr.forEach(f=>buildFront(run,un.u,f,isOpen?dep:dep-0.75));
 }
 function buildRange(un){
@@ -522,7 +569,9 @@ function buildUpper(up){
   const run=up.run,[u0,u1]=up.u,[y0,y1]=up.y,D=up.d; FM=up.white?mats.white:mats.oak; const isOpen=up.fr[0][0]==='open';
   if(isOpen){if(up.openEnd!=='u0')rbox(run,u0,u0+0.75,0,D,y0,y1,FM);if(up.openEnd!=='u1')rbox(run,u1-0.75,u1,0,D,y0,y1,FM);rbox(run,u0,u1,0,D,y0,y0+0.75,FM);rbox(run,u0,u1,0,0.6,y0,y1,up.white?mats.whiteShade:mats.oakShade);
     buildFront(run,up.u,['open',y0,y1],D); return;}
-  rbox(run,u0,u1,0,D-0.75,y0,y1,up.white?mats.whiteCarcass:mats.carcass); up.fr.forEach(f=>buildFront(run,up.u,f,D-0.75));
+  if(up.filler) rbox(run,u0,u1,0,D-0.75,y0,y1,up.white?mats.whiteCarcass:mats.carcass);
+  else shell(run,u0,u1,D-0.75,y0,y1,up.fr,{side:up.white?mats.whiteCarcass:mats.carcass,inner:up.white?mats.whiteCarcass:mats.interior,shelf:up.fr[0][0]==='glass'?mats.glass:null});
+  up.fr.forEach(f=>buildFront(run,up.u,f,D-0.75));
   if(y0>40&&!up.stack&&!up.filler&&y0<70) rbox(run,u0+0.5,u1-0.5,1,D-2,y0-0.4,y0,mats.lightBar,{cast:false});
 }
 // 3″ scribe molding from the 99″ line to the ceiling
@@ -566,8 +615,9 @@ function buildHood(){const h=HOOD,D=h.d; FM=mats.oak;
 function buildPocket(){FM=mats.oak;const [a,b]=POCKET.u;
   rbox('E',a,a+0.75,0,24,0,84,mats.oak); rbox('E',b-0.75,b,0,24,0,84,mats.oak); rbox('E',a,b,0,24,84,84.75,mats.oak);
   slab('E',a,b,84.75,TOP,23.25);                                  // rift oak panel above (p. 7)
-  rbox('E',a+0.75,b-0.75,-3,-1.25,0,83.5,mats.oak);              // inset pocket door, closed, in the partition
-  pullV('E',b-3,36,44,-1.25-0.9);
+  beginMove({type:'pocket',vec:[0,0,-(b-a-3)]});
+  rbox('E',a+0.75,b-0.75,-3,-1.25,0,83.5,mats.oak);              // inset pocket door, slides into the partition
+  pullV('E',b-3,36,44,-1.25-0.9); endMove();
 }
 // Dining wall clad in rift white oak, including the swing door, jamb and casing
 function buildCladding(){FM=mats.oak;
@@ -627,7 +677,8 @@ const STONES={
   soapWhite:{counter:'soap',splash:'mzWhiteS',mosaic:'mzWhite',flat:['#3d4143','#ebe7de','#ebe7de'],sink:'#45494b',rough:.55,label:'Soapstone counters, warm white mosaic backsplash'},
   greige:{counter:'limestone',splash:'mzSageS',mosaic:'mzSage',flat:['#c9c4ba','#a3af97','#a3af97'],sink:'#bdb8ae',rough:.45,label:'Honed grey limestone counters, sage mosaic backsplash'}};
 let stoneOpt='soap';
-function applyStone(){const o=STONES[stoneOpt];document.querySelectorAll('[data-stone]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.stone===stoneOpt));if(!renderer)return;
+function applyStone(){const o=STONES[stoneOpt];$('#tDoors').addEventListener('click',e=>setDoors(e.currentTarget.getAttribute('aria-pressed')!=='true'));
+document.querySelectorAll('[data-stone]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.stone===stoneOpt));if(!renderer)return;
   const set=(m,key,flat)=>{m.map=realMode?TEX[key]:null;m.color.set(realMode?'#ffffff':flat);m.needsUpdate=true;};
   set(mats.counter,o.counter,o.flat[0]); set(mats.stonePanel,o.counter,o.flat[0]); set(mats.splash,o.splash,o.flat[1]); set(mats.mosaic,o.mosaic,o.flat[2]);
   mats.counter.roughness=o.rough; mats.stonePanel.roughness=o.rough+.05; mats.splash.roughness=o.splash.startsWith('mz')?.3:o.rough;
@@ -679,7 +730,7 @@ function init3D(){
     island:std({color:'#3b3e41',roughness:.55}),brass:std({color:'#9c7a45',metalness:.85,roughness:.35}),
     lightBar:std({color:'#fff3d6',emissive:'#ffe7b0',emissiveIntensity:.9}),
     sinkSteel:std({color:'#a9aeb2',metalness:.85,roughness:.3}),sinkStone:std({color:'#dcd9d1',roughness:.55}),basinStone:std({color:'#c9c5bc',roughness:.6}),filter:std({color:'#9a9fa3',metalness:.7,roughness:.5}),
-    ceiling:std({color:'#f4f2ed',roughness:.95}),can:std({color:'#ffffff',emissive:'#fff4e0',emissiveIntensity:1.4}),trim:std({color:'#e8e6e1',roughness:.5}),
+    ceiling:std({color:'#f4f2ed',roughness:.95}),interior:std({color:'#eadfca',roughness:.75}),fridgeIn:std({color:'#f4f6f7',emissive:'#ffffff',emissiveIntensity:.18,roughness:.5}),can:std({color:'#ffffff',emissive:'#fff4e0',emissiveIntensity:1.4}),trim:std({color:'#e8e6e1',roughness:.5}),
     frost:std({color:'#f6f2ea',emissive:'#ffe9c8',emissiveIntensity:.75,roughness:.6,side:THREE.DoubleSide}),metalDark:std({color:'#3a3632',metalness:.6,roughness:.45}),leather:std({color:'#7a3f22',roughness:.7})};
   LIGHTS.hemi=new THREE.HemisphereLight(0xffffff,0xb8ab95,.32);scene.add(LIGHTS.hemi);
   const sun=LIGHTS.sun=new THREE.DirectionalLight(0xfff6ea,.62);sun.position.set(440,480,320);sun.target.position.set(150,0,120);
@@ -708,7 +759,8 @@ function setView(name,instant){const v=VIEWS[name];if(!v||!camera)return;
   const p1=new THREE.Vector3(...v.p),t1=new THREE.Vector3(...v.t);
   if(instant||reduce){camera.position.copy(p1);controls.target.copy(t1);controls.update();return;}
   anim={p0:camera.position.clone(),t0:controls.target.clone(),p1,t1,s:performance.now(),d:900};}
-function loop(){requestAnimationFrame(loop);
+let lastT=performance.now();
+function loop(){requestAnimationFrame(loop);const nowT=performance.now();tickDoors(Math.min(80,nowT-lastT));lastT=nowT;
   if(anim){let k=Math.min(1,(performance.now()-anim.s)/anim.d);k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
     camera.position.lerpVectors(anim.p0,anim.p1,k);controls.target.lerpVectors(anim.t0,anim.t1,k);if(k>=1)anim=null;}
   if(ceiling) ceiling.visible=realMode&&camera.position.y<H-1;
